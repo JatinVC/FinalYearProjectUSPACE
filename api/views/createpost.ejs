@@ -1,0 +1,40 @@
+<%- include('partials/header'); %>
+  <div class="col-md-6" style="margin: 0 auto; position: relative; top: 200px;">
+    <form method="POST" action="/api/discussion/createpost/<%= stid %>">
+      <div class="form-group">
+        <label for="title">Post Title</label>
+        <input type="text" class="form-control" id="title" name="title">
+      </div>
+      <div class="form-group">
+        <label for="category">Select Category</label>
+        <select class="form-control" id="category" name="category">
+          <option value="1">Mathematics for Computing</option>
+          <option>Introduction to Computer Organization(Not Working Yet)</option>
+          <option>Introduction to Data Structures and Algorithms(Not Working Yet)</option>
+          <option>Object Oriented Programming(Not Working Yet)</option>
+          <option>Introduction to Computer Programming(Not Working Yet)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="topic">Select Topic</label>
+        <select class="form-control" id="topic" name="topic">
+          <option value="1">General Discussion</option>
+          <option value="2">Assignment Talk</option>
+          <option value="3">Exam Talk</option>
+          <option value="4">Projects</option>
+          <option value="5">Teacher Review</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <label for="content">Example textarea</label>
+          <textarea class="form-control" id="content" name="content" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" id="btn-signup" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Post</button>
+          <% if (message.length > 0) { %>
+            <div class="alert alert-primary col-sm-12"><%= message %></div>
+          <% } %>
+        </div>
+    </form>
+  </div>
+<%- include('partials/footer'); %>

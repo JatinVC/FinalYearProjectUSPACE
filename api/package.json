@@ -1,0 +1,27 @@
+{
+  "name": "posting",
+  "version": "1.0.0",
+  "description": "posting functionality",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chandwaney Jatin Vimal",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "cookie-session": "^1.4.0",
+    "cookies": "^0.8.0",
+    "ejs": "^3.0.1",
+    "ejs-lint": "^1.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "knex": "^0.20.11",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "mysql": "^2.18.1",
+    "req-flash": "0.0.3"
+  }
+}
