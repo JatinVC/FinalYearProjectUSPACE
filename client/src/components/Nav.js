@@ -5,10 +5,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
-import ButtonGroup from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import {Link as RouterLink} from 'react-router-dom';
-
+import {Link} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -43,15 +42,12 @@ const Nav = () =>{
               <Typography variant="h6" className={classes.title}>
                 Life(a place for student)
               </Typography>
-              
-              <ButtonGroup size="small"variant="contained" color="Primary" aria-label="outlined secondary button group">
-                 <Button>Home</Button>
-                 <Button Component={RouterLink} path='/discussion'>Discussion</Button>
-                 <Button>Teacher Review</Button>
-                 <Button>Group Manager</Button>
-              </ButtonGroup>
-              
-              <Button>login</Button>
+                <BrowserRouter>
+                  <Button component={Link} to='/'>Home</Button>
+                  <Button component={Link} to='/discussion'>Discussion</Button>
+                  <Button component={Link} to='/groupmanager'>Project Manager</Button>
+                  <Button component={Link} to='/login'>Login</Button>
+                </BrowserRouter> 
               <Button><Avatar className={classes.rooted}alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.small} /></Button>
             </Toolbar>
           </AppBar>

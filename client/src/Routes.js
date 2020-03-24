@@ -13,4 +13,4 @@ export default () =>
             <Route path='/register' exact component={Register} />
             <Route path='/discussion' exact component={Discussion} />
         </Switch>
-    </BrowserRouter>
+    </BrowserRouter>;
