@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import ButtonGroup from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import {Link as RouterLink} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -30,6 +31,8 @@ const useStyles = makeStyles(theme => ({
       },
   }));
  
+
+
 const Nav = () =>{
     const classes = useStyles();
     return (
@@ -43,7 +46,7 @@ const Nav = () =>{
               
               <ButtonGroup size="small"variant="contained" color="Primary" aria-label="outlined secondary button group">
                  <Button>Home</Button>
-                 <Button>Discussion</Button>
+                 <Button Component={RouterLink} path='/discussion'>Discussion</Button>
                  <Button>Teacher Review</Button>
                  <Button>Group Manager</Button>
               </ButtonGroup>
