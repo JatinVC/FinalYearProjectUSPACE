@@ -7,7 +7,12 @@ import Button from '@material-ui/core/Button';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
 import Avatar from '@material-ui/core/Avatar';
 import {Link} from 'react-router-dom';
-import {BrowserRouter} from 'react-router-dom';
+// import {BrowserRouter} from 'react-router-dom';
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
+// import clsx from 'clsx';
+// import Drawer from './Drawer';
+
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -29,8 +34,16 @@ const useStyles = makeStyles(theme => ({
         height: theme.spacing(3),
       },
   }));
- 
 
+// const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+// function handleDrawerOpen() {
+//   setDrawerOpen(true);
+// }
+
+// function handleDrawerClose() {
+//   setDrawerOpen(false);
+// }
 
 const Nav = () =>{
     const classes = useStyles();
@@ -38,21 +51,34 @@ const Nav = () =>{
         <div className={classes.root}>
           <AppBar position="static">
             <Toolbar>
+              {/* <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, {
+                  [classes.hide]: drawerOpen,
+                })}
+              >
+                  <MenuIcon />
+                </IconButton> */}
               <AcUnitIcon/>
               <Typography variant="h6" className={classes.title}>
-                Life(a place for student)
+                Life
               </Typography>
-                <BrowserRouter>
                   <Button component={Link} to='/'>Home</Button>
                   <Button component={Link} to='/discussion'>Discussion</Button>
                   <Button component={Link} to='/groupmanager'>Project Manager</Button>
                   <Button component={Link} to='/login'>Login</Button>
-                </BrowserRouter> 
-              <Button><Avatar className={classes.rooted}alt="Remy Sharp" src="/static/images/avatar/1.jpg" className={classes.small} /></Button>
+              <Button><Avatar className={classes.small}alt="Remy Sharp" src="/static/images/avatar/1.jpg" /></Button>
             </Toolbar>
           </AppBar>
+          {/* <Drawer
+              open={drawerOpen}
+              handleDrawerClose={handleDrawerClose}
+          /> */}
         </div>
       );
     
 }
-export default Nav
+export default Nav;
