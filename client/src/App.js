@@ -9,7 +9,6 @@ export class App extends Component {
     return(
       <div> 
         <Nav />
-        
         <Routes />
       </div>
     )
