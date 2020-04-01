@@ -40,15 +40,13 @@ app.use(bodyParser.json());
 
 //router routes
 var post = require('./routes/posts');
-var index = require('./routes/index');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
 
 //routing the mounting
 app.use('/api', post.router);
-app.use('/', index.router);
-app.use('/', auth.router);
-app.use('/', user.router);
+app.use('/api', auth.router);
+app.use('/api', user.router);
 
 
 module.exports = app;

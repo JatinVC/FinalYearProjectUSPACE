@@ -14,8 +14,8 @@ export default () =>
             <Route path='/login' exact component={Login} />
             <Route path='/register' exact component={Register} />
             <Route path='/discussion' exact component={Discussion} />
-            <Route path='/TeacherReview' exact component={TeacherReview} />
-            <Route path='/Explain4TRNB' exact component={Explain4TRNB} />
-            <Route path='/Groupmanager' exact component={GroupManager} />
-            <Route path='/IndividualRoom' exact component={IndividualRoom} />
+            <Route path='/teacherReview' exact component={TeacherReview} />
+            <Route path='/explain4trnb' exact component={Explain4TRNB} />
+            <Route path='/groupmanager' exact component={GroupManager} />
+            <Route path='/individualroom' exact component={IndividualRoom} />
         </Switch>;
