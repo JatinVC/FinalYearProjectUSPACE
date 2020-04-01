@@ -96,6 +96,13 @@ export default function AppDrawer(props) {
             </ListItem>
             <ListItem button
                 component={Link}
+                to="/TeacherReview"
+                onClick={handleDrawerClose}
+            >
+                <ListItemText primary={'TeacherReview'} />
+            </ListItem>
+            <ListItem button
+                component={Link}
                 to="/projectmanager"
                 onClick={handleDrawerClose}
             >
