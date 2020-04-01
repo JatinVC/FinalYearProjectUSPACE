@@ -1,11 +1,11 @@
 # dependencies
-**/node_modules
+node_modules/
 
 # Debug log from npm
 npm-debug.log
 
 # VSCode settings
-**/.vscode
+.vscode/
 
 # vscode workspace files
 *.code-workspace
