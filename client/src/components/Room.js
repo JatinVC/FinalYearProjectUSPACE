@@ -6,10 +6,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid'
-import Ricky from './IMG/Ricky.jpeg';
-import David from './IMG/David.jpeg';
+import Ricky from '../Img/Ricky.jpeg';
+import David from '../Img/David.jpeg';
 import Typography from '@material-ui/core/Typography';
-import math from './IMG/math.jpg'
+import math from '../Img/math.jpg'
 import {Link} from 'react-router-dom'
 const useStyles = makeStyles({
   root: {

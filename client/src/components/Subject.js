@@ -8,15 +8,15 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import math from './IMG/math.jpg'
-import chinese from './IMG/chinese.png'
-import engineering from './IMG/engineering.jpg'
-import business from './IMG/business.jpg'
-import history from './IMG/history.jpg'
-import media from './IMG/media.jpg'
-import physics from './IMG/physics.jpg'
-import science from './IMG/science.jpg'
-import art from './IMG/art.jpg'
+import math from '../Img/math.jpg'
+import chinese from '../Img/chinese.png'
+import engineering from '../Img/engineering.jpg'
+import business from '../Img/business.jpg'
+import history from '../Img/history.jpg'
+import media from '../Img/media.jpg'
+import physics from '../Img/physics.jpg'
+import science from '../Img/science.jpg'
+import art from '../Img/art.jpg'
 import {Link} from 'react-router-dom'
 const useStyles = makeStyles({
   root: {

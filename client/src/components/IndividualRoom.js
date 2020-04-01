@@ -1,7 +1,7 @@
 import React from 'react'
 
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Ricky from './IMG/Ricky.jpeg'
+import Ricky from '../Img/Ricky.jpeg'
 import Grid from '@material-ui/core/Grid'
 import Menu from '@material-ui/core/Menu';
 import Card from '@material-ui/core/Card';
