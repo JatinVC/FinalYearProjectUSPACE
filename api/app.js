@@ -16,19 +16,8 @@ var connection = sql.createConnection({
 connection.connect();
 global.db = connection;
 
-var server = http.createServer((req, res)=>{
-    // var cookies = new cookies(req, res);
-    // var lastVisit = cookies.get('LastVisit', {signed: true});
-
-    // cookies.set('lastVisit', new Date().toISOString(), {signed: true});
-    // if(!lastVisit){
-    //     res.setHeader('Content-Type', 'text/plain');
-    //     res.end('Welcome, first time visitor!');
-    // }else{
-    //     res.setHeader('Content-Type', 'text/plain');
-    //     res.end('Welcome back! Nothing much has changed since your last visit at ' + lastVisit + '.');
-    // }
-});
+var server = http.createServer(app);
+server.listen(8000);
 
 //allowing requests CORS (Cross origin resource sharing)
 app.use(function(req, res, next) {
@@ -56,4 +45,3 @@ app.use('/api', user.router);
 
 
 module.exports = app;
-app.listen(8000);

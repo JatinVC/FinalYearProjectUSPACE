@@ -2,30 +2,29 @@ var router = require('express').Router();
 var _ = require('lodash');
 var moment = require('moment');
 
-//get page
-router.get('/discussion/createpostpage/:stid', function(req, res, next){
-    res.render('createpost', {message: '', stid: req.params.stid});
-});
-
 //post all the information to the database
-router.post('/discussion/createpost/:stid', function(req, res, next){
-    //TODO: when user presses submit, all the data submitted will go into the database
+router.post('/createpost/:stid', function(req, res, next){
+    //when user presses submit, all the data submitted will go into the database
     var post = req.body;
     var title = post.title;
     var catId = post.category;
     var topicId = post.topic;
     var content = post.content;
-    //TODO: get current users id as well done by checking the user that is signed in, and then select the user id and store in variable
+    //get current users id as well done by checking the user that is signed in, and then select the user id and store in variable
     var stid = req.params.stid;
     var sql = `INSERT INTO post(post_title,post_content,post_cat,post_topic,post_user) VALUES ('${title}','${content}','${catId}', '${topicId}', '${stid}')`;
     db.query(sql, function(err, results){
         if(results){
-            var message = "Successfully posted";
-            res.render('createpost', {message:message, stid: stid});
+            res.json({
+                success:true,
+                message:'successfully posted'
+            })
         }else{
-            var message = "Error Posting, check log";
-            console.log(err);
-            res.render('createpost',{message:message, stid: stid});
+            res.status(400).json({
+                success: false,
+                message: 'Error posting',
+                error: err
+            });
         }
     });
 });
@@ -38,14 +37,21 @@ router.get('/discussion/showposts', function(req, res, next){
             _.each(results, (element)=>{
                 element.post_date = moment(element.post_date).format("MMMM Do YYYY, h:mm:ss a");
             });
-            res.render('showpost', {results});
+            res.json({
+                success: true,
+                posts: results
+            });
         }else{
             console.log(err);
+            res.status(400).json({
+                success: false,
+                message: err
+            });
         }
     });
 });
 
-//TODO: make post with a specific topic be seen
+//make post with a specific topic be seen
 router.get('/discussion/showposts/:topicid', (req, res, next)=>{
     let topicId = req.params.topicid; 
     var sql = `SELECT * FROM post WHERE post_topic = '${topicId}'`
@@ -54,11 +60,96 @@ router.get('/discussion/showposts/:topicid', (req, res, next)=>{
             _.each(results, (element)=>{
                 element.post_date = moment(element.post_date).format("MMMM Do YYYY, h:mm:ss a");
             });
-            res.render('showpost', {results});
+            res.json({
+                success: true, 
+                posts: results
+            });
         }else{
             console.log(err);
+            res.status(400).json({
+                success: false,
+                message: err
+            });
         }
     });
 });
 
+//post on an individual page, with comments
+router.get('/discussion/showposts/:post_id', (req, res, next)=>{
+    var sql = `SELECT * FROM post WHERE post_id='${req.params.post_id}' UNION SELECT * FROM comments WHERE comment_post='${req.params.post_id}'`
+    db.query(sql, (err, results)=>{
+        if(results){
+            _.each(results, (element)=>{
+                element.post_date = moment(element.post_date).format("MMMM Do YYYY, h:mm:ss a");
+            });
+            res.json({
+                success: true,
+                post: results
+            });
+        }else{
+            res.status(404).json({
+                success: false,
+                message: err
+            });
+        }
+    });
+});
+
+//create comment on specific post
+router.post('/discussion/:post_id/createcomment/:user_id', (req, res, next)=>{
+    let user = req.params.user_id;
+    let post = req.params.post_id;
+    let content = req.body.comment;
+    var sql = `INSERT INTO comments(comment_user, comment_content, comment_post) VALUES(?,?,?)`;
+    db.query(sql, [user, content, post], (err, results)=>{
+        if(results){
+            res.json({
+                success: true,
+                message: 'comment posted successfully'
+            });
+        }else{
+            res.status(400).json({
+                success: false,
+                message: 'error posting comment',
+                error: err
+            });
+        }
+    });
+});
+
+//update likes counter
+router.post('/discussion/:post_id/likepost', (req, res, next)=>{
+    var sql = `UPDATE post SET post_likes = post_likes+1 WHERE post_id='${req.params.post_id}'`;
+    db.query(sql, (err, result)=>{
+        if(results){
+            res.json({
+                success: true,
+                message: 'like added'
+            });
+        }else{
+            res.status(400).json({
+                success: false,
+                message: err
+            });
+        }
+    });
+});
+
+//get current likes
+router.get('/discussion/:post_id/getlikes', (req, res, next)=>{
+    var sql = `SELECT post_likes FROM post WHERE post_id='${req.params.post_id}'`;
+    db.query(sql, (err, result)=>{
+        if(result){
+            res.json({
+                success: true,
+                likes: result
+            });
+        }else{
+            res.status(400).json({
+                success: false,
+                message: 'error getting likes'
+            })
+        }
+    });
+});
 module.exports.router = router;
