@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,7 +34,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+export default function Login(props) {
+  const [loginMessage, setLoginMessage] = useState('');
+  const [userData, setUserData] = useState({username: '', password: ''});
+  
+  function login(event){
+
+    axios.post('http://localhost:8000/api/login', {
+      username: userData.username,
+      password: userData.password
+    })
+    .then(res=>{
+      if(res.data.success){
+        //redirect to the landing page / discussion page or something idfk
+        props.history.push('/');
+      }else{
+        setLoginMessage('Login Failed');
+      }    
+    });
+    event.preventDefault();
+  }
+
+  function handleFieldChange(event){
+    setUserData({...userData, [event.target.name]:event.target.value});
+  }
+
   const classes = useStyles();
 
   return (
@@ -46,17 +71,19 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={login}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="username"
-            label="Username"
+            label="username"
             name="username"
             autoComplete="username"
             autoFocus
+            value={userData.username}
+            onChange={handleFieldChange}
           />
           <TextField
             variant="outlined"
@@ -68,6 +95,8 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={userData.password}
+            onChange={handleFieldChange}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -93,6 +122,7 @@ export default function Login() {
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
+            {loginMessage}
           </Grid>
         </form>
       </div>

@@ -1,80 +1,83 @@
 var router = require('express').Router();
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 const saltRounds = 10;
+const jwtSecret = 'Jatintinislitboi';
 
-//signup
-router.get('/signuppage', (req, res, next)=>{
-    let message = '';
-    res.render('signup', {message});
-});
-router.post('/signup', (req, res, next)=>{
-    var message = '';
-    var post = req.body;
-    var uname = post.username;
-    var pass = post.password;
-    var name = post.firstname + " " + post.lastname;
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-        bcrypt.hash(pass, salt, function(err, hash) {
-            var sql = "INSERT INTO `users`(`realname`,`username`,`password`) VALUES ('" + name + "','" + uname + "','" + hash + "')";
-            db.query(sql, function(err, result) {
-                message = "Success, Your account has been cweated UWU";
-                res.render('signup',{message: message});
-             });
-        });
-    });
-});
 // signup refactor for frontend react
 router.post('/signup', (req, res, next) =>{
-
+    var username = req.body.username;
+    var plainPassword = req.body.password;
+    var name = req.body.firstName + ' ' + req.body.lastName;
+    var email = req.body.email;
+    var studentId = req.body.studentId;
+    bcrypt.genSalt(saltRounds, (err, salt)=>{
+        bcrypt.hash(plainPassword, salt, (err, hash)=>{
+            var sql = "INSERT INTO `users`(`realname`,`username`,`password`, `user_email`, `user_stid`, `user_role`) VALUES ('" + name + "','" + username + "','" + hash + "','" + email + "','" + studentId + "','"+3+"')";
+            db.query(sql, (err, result)=>{
+                if(result){
+                    res.json({
+                        success: true,
+                        message: 'User registered',
+                        user: result[0]
+                    });
+                }else{
+                    res.status(400).json({
+                        success: false,
+                        message: 'User not registered'
+                    })
+                }
+            });
+        })
+    })
 });
 
-//login
+//Login refactor
 router.post('/login', (req, res, next)=>{
-    var message = '';
-    var sesh = req.session;
-    var post = req.body;
-    var username = post.username;
-    var password = post.password;
-
-    var sql="SELECT stid, username, password FROM `users` WHERE `username`='"+username+"'";                           
+    let username = req.body.username;
+    let password = req.body.password;
+    let sql="SELECT user_stid, username, password, user_role FROM `users` WHERE `username`='"+username+"'";
     db.query(sql, (err, results)=>{
         if(results){
-            bcrypt.compare(password, results[0].password, function(err, result) {
-                // result == true
+            bcrypt.compare(password, results[0].password, (err, result)=>{
                 if(result){
-                    global.userId = results[0].stid;
-                    global.user = results[0].username;
-                    console.log(results[0].stid);
-                    res.redirect('/home/'+userId);
+                    var user = {
+                        username: results[0].username, 
+                        userrole: results[0].user_role
+                    }
+
+                    var token = jwt.sign(user, jwtSecret, {
+                        algorithm: 'HS256',
+                        expiresIn: 60*60*24 //expires in a day
+                    });
+
+                    res.cookie('token', token, {maxAge: 60*60*24*1000});
+                    res.json({
+                        success: true,
+                        message: 'User Authenticated',
+                        token: token
+                    });
                 }else{
-                    message = 'Wrong Credentials';
-                    res.render('login', {message});
+                    res.status(401).json({
+                        success: false,
+                        message: 'User Authentication Failed',
+                        error: err
+                    });
                 }
             });
         }else{
-            message = 'Wrong Credentials';
-            res.render('login', {message});
-        }
-        if(err){
-            message = 'Wrong Credentials';
-            res.render('login', {message});
+            res.status(401).json({
+                success: false,
+                message: 'User Authentication Failed',
+                error: err
+            });
         }
     });
-});
-
-//landing page functionality
-router.get('/home/:stid', (req, res, next)=>{
-    let stid = req.params.stid;
-
-    res.render('dashboard', {stid});
 
 });
 
-//logout
-router.get('/home/logout', (req, res, next)=>{
-    req.session.destroy((err)=>{
-        res.redirect('/');
-    });
+//logout refactor
+router.get('/logout', (req, res, next)=>{
+    res.clearCookie('token');
 });
-
 module.exports.router = router;

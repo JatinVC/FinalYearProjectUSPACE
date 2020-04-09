@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,8 +32,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register() {
+export default function Register(props) {
   const classes = useStyles();
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    studentId: '',
+    password: ''
+  });
+  const [registerMessage, setRegisterData] = useState('');
+  
+  function register(event){
+    console.log(userData);
+    axios.post('http://localhost:8000/api/signup', {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      username: userData.username,
+      studentId: userData.studentId,
+      password: userData.password
+    })
+    .then(res=>{
+      if(res.data.success){
+        props.history.push("/login");
+      }else{
+        setRegisterData('Registration failed, please try again');
+      }
+    })
+    event.preventDefault();
+  };
+
+  function handleFieldChange(event){
+    setUserData({...userData, [event.target.name]:event.target.value});
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -44,7 +78,7 @@ export default function Register() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={register}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -56,6 +90,8 @@ export default function Register() {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                value={userData.firstName}
+                onChange={handleFieldChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -67,6 +103,8 @@ export default function Register() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                value={userData.lastName}
+                onChange={handleFieldChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -78,6 +116,8 @@ export default function Register() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={userData.email}
+                onChange={handleFieldChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,6 +129,8 @@ export default function Register() {
                 label="Username"
                 name="username"
                 autoComplete="username"
+                value={userData.username}
+                onChange={handleFieldChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,6 +142,8 @@ export default function Register() {
                 label="Student ID"
                 name="studentId"
                 autoComplete="studentId"
+                value={userData.studentId}
+                onChange={handleFieldChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -112,6 +156,8 @@ export default function Register() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={userData.password}
+                onChange={handleFieldChange}
               />
             </Grid>
           </Grid>
@@ -130,6 +176,7 @@ export default function Register() {
                 Already have an account? Sign in
               </Link>
             </Grid>
+            {registerMessage}
           </Grid>
         </form>
       </div>

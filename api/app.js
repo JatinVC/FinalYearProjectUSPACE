@@ -2,15 +2,11 @@ const express = require('express')
     , http = require('http')
     , path = require('path');
 const app = express();
-const session = require('express-session');
 const sql = require('mysql');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const ejs = require('ejs');
-const cookies = require('cookies');
+const cors = require('cors');
 
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
 var connection = sql.createConnection({
     host : 'localhost',
     user : 'root',
@@ -21,22 +17,32 @@ connection.connect();
 global.db = connection;
 
 var server = http.createServer((req, res)=>{
-    var cookies = new cookies(req, res);
-    var lastVisit = cookies.get('LastVisit', {signed: true});
+    // var cookies = new cookies(req, res);
+    // var lastVisit = cookies.get('LastVisit', {signed: true});
 
-    cookies.set('lastVisit', new Date().toISOString(), {signed: true});
-    if(!lastVisit){
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('Welcome, first time visitor!');
-    }else{
-        res.setHeader('Content-Type', 'text/plain');
-        res.end('Welcome back! Nothing much has changed since your last visit at ' + lastVisit + '.');
-    }
+    // cookies.set('lastVisit', new Date().toISOString(), {signed: true});
+    // if(!lastVisit){
+    //     res.setHeader('Content-Type', 'text/plain');
+    //     res.end('Welcome, first time visitor!');
+    // }else{
+    //     res.setHeader('Content-Type', 'text/plain');
+    //     res.end('Welcome back! Nothing much has changed since your last visit at ' + lastVisit + '.');
+    // }
 });
 
-app.set('port', process.env.PORT || 8080);
+//allowing requests CORS (Cross origin resource sharing)
+app.use(function(req, res, next) {
+    app.options('*', cors());
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Referer, Authorization");
+    res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+    next();
+  });
+
+app.set('port', process.env.PORT || 8000);
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 //router routes
 var post = require('./routes/posts');
@@ -50,4 +56,4 @@ app.use('/api', user.router);
 
 
 module.exports = app;
-app.listen(8080);
+app.listen(8000);
