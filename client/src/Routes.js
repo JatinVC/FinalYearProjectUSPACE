@@ -4,10 +4,11 @@ import Home from './containers/Home';
 import Login from './containers/Login';
 import Register from './containers/Register';
 import Discussion from './containers/Discussion';
-import TeacherReview from './containers/TeacherReview'
-import Explain4TRNB from './components/Explain4TRNB'
-import GroupManager from './containers/GroupManager'
-import IndividualRoom from './components/IndividualRoom'
+import TeacherReview from './containers/TeacherReview';
+import Explain4TRNB from './components/Explain4TRNB';
+import GroupManager from './containers/GroupManager';
+import IndividualRoom from './components/IndividualRoom';
+import CreatePost from './containers/CreatePost';
 export default () =>
         <Switch>
             <Route path='/' exact component={Home} />
@@ -18,4 +19,5 @@ export default () =>
             <Route path='/explain4trnb' exact component={Explain4TRNB} />
             <Route path='/projectmanager' exact component={GroupManager} />
             <Route path='/individualroom' exact component={IndividualRoom} />
+            <Route path='/createpost' exact component={CreatePost} />
         </Switch>;

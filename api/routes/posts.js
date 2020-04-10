@@ -35,7 +35,7 @@ router.get('/discussion/showposts', function(req, res, next){
     db.query(sql, function(err, results){
         if(results){
             _.each(results, (element)=>{
-                element.post_date = moment(element.post_date).format("MMMM Do YYYY, h:mm:ss a");
+                element.post_date = moment(element.post_date).format("MMMM D YYYY, h:mm a");
             });
             res.json({
                 success: true,
@@ -149,6 +149,42 @@ router.get('/discussion/:post_id/getlikes', (req, res, next)=>{
                 success: false,
                 message: 'error getting likes'
             })
+        }
+    });
+});
+
+//get topics
+router.get('/discussion/topics', (req, res, next)=>{
+    var sql = `SELECT * FROM topic`;
+    db.query(sql, (err, result)=>{
+        if(result){
+            res.json({
+                success: true,
+                topics: result
+            });
+        }else{
+            res.status(400).json({
+                success: false,
+                error: err
+            });
+        }
+    });
+});
+
+//get categories
+router.get('/discussion/categories', (req, res, next)=>{
+    var sql=`SELECT * FROM category`;
+    db.query(sql, (err, result)=>{
+        if(result){
+            res.json({
+                success: true,
+                category: result
+            });
+        }else{
+            res.status(400).json({
+                success:false,
+                error: err
+            });
         }
     });
 });

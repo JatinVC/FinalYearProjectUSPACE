@@ -19,6 +19,9 @@ import Typography from '@material-ui/core/Typography'
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
+
+
 const options = [
     'Add friend',
     'Check profile'
@@ -59,7 +62,7 @@ const options = [
       },
     }));
   
-const PostCard =() =>{
+const PostCard =(props) =>{
    
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
@@ -82,7 +85,7 @@ const PostCard =() =>{
     <Card className={classes.root}>
       <CardHeader
         avatar={
-            <Avatar alt="Cindy Baker" src={Head1} />
+            <Avatar alt="Cindy Baker" src={Head1} /> //handle avatar generation later
         }
         action={
             <div>
@@ -110,45 +113,26 @@ const PostCard =() =>{
       </Menu>
       </div>
         }
-        title="Kitty Yan"
-        subheader="September 14, 2019"
+        title={props.post.post_user}
+        subheader={props.post.post_date}
       />
-      <CardMedia
-        className={classes.media}
-        image={place}
-        title="Good place"
-      />
+      
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-        Today was amazing! that's a great story in my life!
+        {props.post.post_topic}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>The story:</Typography>
-          <Typography paragraph>
-          I woke up before my alarm clock rang and found breakfast already made for me! Is not the best! The school bus was late, my seat on it was saved, and all of my teachers were absent! I really don’t think tomorrow could be any better than today.
+          <Typography variant='h6'>
+          {props.post.post_title}
           </Typography>
+          <Typography paragraph>
+          {props.post.post_content}
+          </Typography>
+          <IconButton aria-label="add to favorites" /* update likes function here */>
+            <FavoriteIcon />
+          </IconButton>
         </CardContent>
-      </Collapse>
       </Card>
   )
 }

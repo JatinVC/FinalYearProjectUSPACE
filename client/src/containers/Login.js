@@ -122,7 +122,7 @@ export default function Login(props) {
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
-            {loginMessage}
+            <p>{loginMessage}</p>
           </Grid>
         </form>
       </div>

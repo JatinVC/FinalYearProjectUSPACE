@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link';
 import PostCard from '../components/PostCard'
 import { red } from '@material-ui/core/colors';
-
+import axios from 'axios';
 import AddIcon from '@material-ui/icons/Add';
 
  
@@ -48,14 +48,35 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: red[500],
       },
     }));
-  
 function Discussion (){
 
 
     const classes = useStyles();
     const preventDefault = event => event.preventDefault();
     const [anchorEl, setAnchorEl] = React.useState(null);
-    
+    const [posts, setPosts] = useState([]);
+
+    //get all posts, store in state, pass them as a prop
+    function getPosts(){
+      axios.get('http://localhost:8000/api/discussion/showposts')
+      .then(res=>{
+        if(res.data.success){
+          setPosts(res.data.posts);
+        }else{
+          console.log('issue getting posts');
+        }
+      });
+    }
+
+
+    useEffect(()=>{
+      getPosts();
+    }, []);
+
+    var postCards = posts.map((post)=>{
+      return(<PostCard post={post} key={post.post_id}></PostCard>);
+    });
+
     return(
         <Grid container direction="row" >
             <Grid item xs={2}>
@@ -94,16 +115,13 @@ function Discussion (){
             </Grid>
 
             <Grid item xs={8}>
-            <PostCard/>
-            <PostCard/>
-            <PostCard/>
+            {postCards}
             </Grid>
             <Grid item xs={2}>
             <Typography variant='h6'>Want make announcement?</Typography>
-                <Button variant="outlined" color="primary">log in!</Button>
                 <br/>
                 <Button variant="outlined" color="primary">
-               <AddIcon/>  Add a post
+                <AddIcon/>  Add a post
                 </Button>
             <hr/>
             <Typography variant='h6'>You may also like:</Typography>
@@ -118,15 +136,12 @@ function Discussion (){
                 Yahoo
                 </Link>
                 <br/>
-                <Link href="#" onClick={preventDefault}>
+                <Link href="https://www.google.com" onClick={preventDefault}>
                 Google
                 </Link>
                 <hr/>
             </Typography>
             </Grid>
-           
-            
-           
         </Grid>
     );
 }
