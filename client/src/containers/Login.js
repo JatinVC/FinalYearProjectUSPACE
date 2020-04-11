@@ -55,7 +55,7 @@ export default function Login(props) {
     authService.login(values.username, values.password)
       .then(
         token=>{
-          props.history.push('/discussion');
+          props.history.push("/discussion");
           updateAuth();
         },
         error=>{
