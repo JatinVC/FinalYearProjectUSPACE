@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreatePost() {
+export default function CreatePost(props) {
     const classes = useStyles();
     const [topicList, setTopicList] = useState([]);
     const [catList, setCatList] = useState([]);
@@ -100,6 +100,20 @@ export default function CreatePost() {
     var catItems=catList.map((category)=>{
         return(<option value={category.cat_id}>{category.cat_name}</option>);
     })
+    function handlePost() {
+      Axios.post("http://localhost:8000/discussion/createpost/1",{
+        title:postData.postTitle,
+        category:postData.postCat,
+        topic:postData.postTopic,
+        content:postData.postContent
+      })
+      .then(res=>{
+        console.log("Postsuccessful");
+        props.history.push('/');
+
+      } );
+    }
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -108,7 +122,7 @@ export default function CreatePost() {
         <Typography component="h1" variant="h5">
           Create Post
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handlePost}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -121,7 +135,8 @@ export default function CreatePost() {
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} spacing={5}>
+            <Grid container xs={12}  direction="row" >
+              <Grid item xs={6}>
             <FormControl variant="filled" className={classes.formControl}>
                 <InputLabel id="topic-select-label">Topic</InputLabel>
                 <Select
@@ -132,6 +147,8 @@ export default function CreatePost() {
                 {topicItems}
                 </Select>
             </FormControl>
+            </Grid>
+            <Grid item xs={6}>
             <FormControl variant="filled" className={classes.formControl}>
                 <InputLabel id="category-select-label">Category</InputLabel>
                 <Select
@@ -143,27 +160,23 @@ export default function CreatePost() {
                 </Select>
             </FormControl>
             </Grid>
-            <Grid item xs={12}>
-                <TextField
-                id="standard-multiline-flexible"
-                label="Multiline"
-                multiline
-                rowsMax="4"
-                value={postData.postContent}
-                onChange={handleChange}
-                />
             </Grid>
-            <Grid item xs={12}>
+            
+           
+            <Grid item xs={12} >
               <TextField
+              value={postData.postContent}
+              onChange={handleChange}
+                multiline rows="19"
                 variant="outlined"
                 required
                 fullWidth
                 name="password"
-                label="Password"
-                type="password"
+                label="Post Content"
+               
                 id="password"
-                autoComplete="current-password"
               />
+            
             </Grid>
           </Grid>
           <Button
