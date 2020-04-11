@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,6 +15,9 @@ import {Menu} from '@material-ui/core';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
 // import {Badge} from '@material-ui/core';
 import {MenuItem} from '@material-ui/core';
+import {authService} from '../_services/auth.service';
+import {AuthContext} from '../contexts/auth-context';
+
 const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
@@ -37,11 +40,12 @@ const useStyles = makeStyles(theme => ({
       },
   }));
 
-const Nav = () =>{
+const Nav = (props) =>{
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [setMobileMoreAnchorEl] = React.useState(null);
+
+  const { authenticated, updateAuth } = useContext(AuthContext);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -49,13 +53,8 @@ const Nav = () =>{
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
   const menuId = 'primary-search-account-menu';
@@ -82,10 +81,18 @@ const Nav = () =>{
     setDrawerOpen(false);
   }
 
+  function handleLogout(){
+    authService.logout();
+    updateAuth();
+    // redirect to home page
+    // this.props.history.push("/");
+  }
+
   return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
+            { authenticated && (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -97,6 +104,7 @@ const Nav = () =>{
             >
                 <MenuIcon />
               </IconButton>
+            )}
             <AcUnitIcon/>
             <Typography variant="h6" className={classes.title}>
               Life
@@ -108,7 +116,27 @@ const Nav = () =>{
                 </Badge>
               </IconButton>
             </MenuItem> */}
-            <Button component={Link} to='/login' style={{color:'white'}}>Login</Button>
+
+            <div>
+              <div>
+                {authenticated?(
+                  <Button
+                    type="submit"
+                    color="inherit"
+                    onClick={handleLogout}
+                    >
+                      Logout
+                    </Button>
+                ):(
+                  <Button 
+                    component={Link} 
+                    to='/login' 
+                    style={{color:'white'}}>
+                      Login
+                    </Button>
+                )}
+              </div>
+            </div>
             <IconButton
               edge="end"
               aria-label="account of current user"

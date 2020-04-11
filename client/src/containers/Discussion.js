@@ -12,7 +12,7 @@ import PostCard from '../components/PostCard'
 import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import AddIcon from '@material-ui/icons/Add';
-
+import {Link as ReLink} from 'react-router-dom';
  
 const useStyles = makeStyles(theme => ({
     rooted: {
@@ -120,7 +120,7 @@ function Discussion (){
             <Grid item xs={2}>
             <Typography variant='h6'>Want make announcement?</Typography>
                 <br/>
-                <Button variant="outlined" color="primary">
+                <Button component={ReLink} variant="outlined" color="primary" to='/createpost'>
                 <AddIcon/>  Add a post
                 </Button>
             <hr/>
@@ -136,7 +136,7 @@ function Discussion (){
                 Yahoo
                 </Link>
                 <br/>
-                <Link href="https://www.google.com" onClick={preventDefault}>
+                <Link href="https://www.google.com">
                 Google
                 </Link>
                 <hr/>

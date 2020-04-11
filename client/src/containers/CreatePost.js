@@ -51,16 +51,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CreatePost(props) {
     const classes = useStyles();
-    const [topicList, setTopicList] = useState([]);
-    const [catList, setCatList] = useState([]);
+    const [topicList, setTopicList] = useState([{topic_id: 1, topic_sub: 'Select'}]);
+    const [catList, setCatList] = useState([{cat_id:1, cat_name: 'Select'}]);
     const [postData, setPostData] = useState({
         postTitle: '',
         postContent: '',
-        postCat: '',
-        postTopic: '',
-        postUser: ''
+        postCat: 1,
+        postTopic: 1,
+        postUser: 1
     });
-
     function getCategory(){
         Axios.get('http://localhost:8000/api/discussion/categories')
         .then(res=>{
@@ -86,6 +85,7 @@ export default function CreatePost(props) {
 
     const handleChange = (event) => {
         setPostData({...postData, [event.target.name]:event.target.value});
+        event.preventDefault();
     };
 
     useEffect(()=>{
@@ -94,24 +94,28 @@ export default function CreatePost(props) {
     }, []);
 
     var topicItems=topicList.map((topic)=>{
-        return (<option value={topic.topic_id}>{topic.topic_sub}</option>);
+        return (<option key={topic.topic_id} value={topic.topic_id}>{topic.topic_sub}</option>);
     });
 
     var catItems=catList.map((category)=>{
-        return(<option value={category.cat_id}>{category.cat_name}</option>);
+        return(<option key={category.cat_id} value={category.cat_id}>{category.cat_name}</option>);
     })
     function handlePost() {
-      Axios.post("http://localhost:8000/discussion/createpost/1",{
+      let requestPayload={
         title:postData.postTitle,
         category:postData.postCat,
         topic:postData.postTopic,
         content:postData.postContent
-      })
+      };
+      Axios.post("http://localhost:8000/api/createpost/16",requestPayload)
       .then(res=>{
-        console.log("Postsuccessful");
-        props.history.push('/');
-
-      } );
+        if(res.data.success){
+          //TODO: fix bug when redirecting
+          props.history.push("/discussion");
+        }else{
+          console.log('post failed');
+        }
+      });
     }
 
 
@@ -122,11 +126,13 @@ export default function CreatePost(props) {
         <Typography component="h1" variant="h5">
           Create Post
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handlePost}>
+        <form className={classes.form} onSubmit={handlePost}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                name="Post Title"
+                value={postData.postTitle}
+                onChange={handleChange}
+                name="postTitle"
                 variant="outlined"
                 required
                 fullWidth
@@ -135,11 +141,12 @@ export default function CreatePost(props) {
                 autoFocus
               />
             </Grid>
-            <Grid container xs={12}  direction="row" >
+            <Grid container item xs={12}  direction="row" >
               <Grid item xs={6}>
             <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="topic-select-label">Topic</InputLabel>
+                <InputLabel id="topic-select-label" disableAnimation>Topic</InputLabel>
                 <Select
+                name="postTopic"
                 native
                 value={postData.postTopic}
                 onChange={handleChange}
@@ -150,8 +157,9 @@ export default function CreatePost(props) {
             </Grid>
             <Grid item xs={6}>
             <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="category-select-label">Category</InputLabel>
+                <InputLabel id="category-select-label" disableAnimation>Category</InputLabel>
                 <Select
+                name="postCat"
                 native
                 value={postData.postCat}
                 onChange={handleChange}
@@ -165,16 +173,14 @@ export default function CreatePost(props) {
            
             <Grid item xs={12} >
               <TextField
-              value={postData.postContent}
-              onChange={handleChange}
+                value={postData.postContent}
+                onChange={handleChange}
                 multiline rows="19"
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
+                name="postContent"
                 label="Post Content"
-               
-                id="password"
               />
             
             </Grid>

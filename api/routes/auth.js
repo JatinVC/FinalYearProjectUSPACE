@@ -80,4 +80,7 @@ router.post('/login', (req, res, next)=>{
 router.get('/logout', (req, res, next)=>{
     res.clearCookie('token');
 });
+
+//check if token is authorized
+
 module.exports.router = router;

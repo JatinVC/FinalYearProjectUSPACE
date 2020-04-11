@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import axios from 'axios';
+import useForm from './useForm';
+import {AuthContext} from '../contexts/auth-context'
+import {authService} from '../_services/auth.service';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,28 +37,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login(props) {
-  const [loginMessage, setLoginMessage] = useState('');
-  const [userData, setUserData] = useState({username: '', password: ''});
+  const {values, handleChange, handleSubmit} = useForm(login);
+
+  const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const {updateAuth} = useContext(AuthContext);
   
-  function login(event){
+  function login(){
+    setSubmitted(true);
+    if(!(values.username && values.password)){
+      return;
+    }
 
-    axios.post('http://localhost:8000/api/login', {
-      username: userData.username,
-      password: userData.password
-    })
-    .then(res=>{
-      if(res.data.success){
-        //redirect to the landing page / discussion page or something idfk
-        props.history.push('/');
-      }else{
-        setLoginMessage('Login Failed');
-      }    
-    });
-    event.preventDefault();
-  }
+    setLoading(true);
+    authService.login(values.username, values.password)
+      .then(
+        token=>{
+          props.history.push('/discussion');
+          updateAuth();
+        },
+        error=>{
+          setError(error);
+          setLoading(false);
+        }
+      );
+  } 
 
-  function handleFieldChange(event){
-    setUserData({...userData, [event.target.name]:event.target.value});
+  if(submitted || loading || error){
+
   }
 
   const classes = useStyles();
@@ -71,7 +81,7 @@ export default function Login(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate onSubmit={login}>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -82,8 +92,8 @@ export default function Login(props) {
             name="username"
             autoComplete="username"
             autoFocus
-            value={userData.username}
-            onChange={handleFieldChange}
+            value={values.username || ''}
+            onChange={handleChange}
           />
           <TextField
             variant="outlined"
@@ -95,8 +105,8 @@ export default function Login(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={userData.password}
-            onChange={handleFieldChange}
+            value={values.password || ''}
+            onChange={handleChange}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -122,7 +132,6 @@ export default function Login(props) {
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
-            <p>{loginMessage}</p>
           </Grid>
         </form>
       </div>

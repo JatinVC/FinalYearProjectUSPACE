@@ -3,7 +3,7 @@ var _ = require('lodash');
 var moment = require('moment');
 
 //post all the information to the database
-router.post('/createpost/:stid', function(req, res, next){
+router.post('/createpost/:user_id', function(req, res, next){
     //when user presses submit, all the data submitted will go into the database
     var post = req.body;
     var title = post.title;
@@ -11,8 +11,8 @@ router.post('/createpost/:stid', function(req, res, next){
     var topicId = post.topic;
     var content = post.content;
     //get current users id as well done by checking the user that is signed in, and then select the user id and store in variable
-    var stid = req.params.stid;
-    var sql = `INSERT INTO post(post_title,post_content,post_cat,post_topic,post_user) VALUES ('${title}','${content}','${catId}', '${topicId}', '${stid}')`;
+    var user_id = req.params.user_id;
+    var sql = `INSERT INTO post(post_title,post_content,post_cat,post_topic,post_user) VALUES ('${title}','${content}','${catId}', '${topicId}', '${user_id}')`;
     db.query(sql, function(err, results){
         if(results){
             res.json({
