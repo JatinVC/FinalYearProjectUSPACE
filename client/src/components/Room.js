@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid'
 import Ricky from '../Img/Ricky.jpeg';
 import David from '../Img/David.jpeg';
 import Typography from '@material-ui/core/Typography';
-import math from '../Img/math.jpg'
 import {Link} from 'react-router-dom'
 const useStyles = makeStyles({
   root: {

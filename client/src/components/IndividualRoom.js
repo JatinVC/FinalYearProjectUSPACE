@@ -12,7 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 const options = [
     'Detail of the room',
     'Clear screen'
@@ -54,11 +54,6 @@ const options = [
     }));
   
 const IndividualRoom =() =>{
-   
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-      };
 
     const classes = useStyles();
    

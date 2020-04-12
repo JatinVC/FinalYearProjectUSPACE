@@ -53,7 +53,6 @@ function Discussion (){
 
     const classes = useStyles();
     const preventDefault = event => event.preventDefault();
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const [posts, setPosts] = useState([]);
 
     //get all posts, store in state, pass them as a prop

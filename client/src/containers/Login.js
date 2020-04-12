@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Login(props) {
   const {values, handleChange, handleSubmit} = useForm(login);
 
-  const [submitted, setSubmitted] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {updateAuth} = useContext(AuthContext);
   
@@ -62,7 +62,7 @@ export default function Login(props) {
           setLoading(false);
         }
       );
-      props.history.push("/discussion");
+    props.history.push("/discussion");
   } 
 
   if(submitted || loading || error){
