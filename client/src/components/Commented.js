@@ -1,9 +1,12 @@
 import React from 'react'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Head1 from '../Img/Head1.jpg'
-import place from '../Img/place.jpg'
+import Head1 from './IMG/Head1.jpg'
+import place from './IMG/place.jpg'
+import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -18,10 +21,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography'
 import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
-import moment from 'moment';
-
-
 const options = [
     'Add friend',
     'Check profile'
@@ -61,9 +62,10 @@ const options = [
         backgroundColor: red[500],
       },
     }));
-  
-const PostCard =(props) =>{
-   
+
+
+const Commented=()=>{
+
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -82,10 +84,13 @@ const PostCard =(props) =>{
       setAnchorEl(null);
     };
     return(
-    <Card className={classes.root}>
+        <Grid container direction="row">
+            <Grid item xs={2}></Grid>
+            <Grid item xs={8}> 
+            <Card className={classes.root}>
       <CardHeader
         avatar={
-            <Avatar alt="Cindy Baker" src={Head1} /> //handle avatar generation later
+            <Avatar alt="Cindy Baker" src={Head1} />
         }
         action={
             <div>
@@ -113,29 +118,68 @@ const PostCard =(props) =>{
       </Menu>
       </div>
         }
-        title={props.post.post_user}
-        subheader={props.post.post_date}
+        title="Kitty Yan"
+        subheader="September 14, 2019"
       />
-      
+     
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-        {props.post.post_topic}
+        <Typography variant="h6" color="first" component="p">
+        Today was amazing! that's a great story in my life!
+        </Typography>
+        <br/>
+        <Typography variant="body2" color="third" component="p">
+        I woke up before my alarm clock rang and found breakfast already made for me! Is not the best! The school bus was late, my seat on it was saved, and all of my teachers were absent! I really don’t think tomorrow could be any better than today.
         </Typography>
       </CardContent>
+      <CardActions disableSpacing>
+      <TextField
+                multiline rows="10"
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Comment"
+               
+                id="password"
+              />
+           
+            
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant='h6'>
-          {props.post.post_title}
-          </Typography>
+          <Typography paragraph>The Comments:</Typography>
           <Typography paragraph>
-          {props.post.post_content}
+         Comment1: I like this girl 
+         <br/>
+         Comment2:Oh, the sky is beautiful
+         <br/>
+         Comment3:Yo, 1+1=2 check it out
           </Typography>
-          <IconButton aria-label="add to favorites" /* update likes function here */>
-            <FavoriteIcon />
-          </IconButton>
-          <Link className={classes.link} to='/Commented'>Add a Comment</Link>
+          
         </CardContent>
-      </Card>
-  )
+      </Collapse>
+      <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Submit you Comment
+          </Button>
+      </Card></Grid>
+            <Grid item xs={2}></Grid>
+        </Grid>
+    )
 }
-
-export default PostCard
+export default Commented
