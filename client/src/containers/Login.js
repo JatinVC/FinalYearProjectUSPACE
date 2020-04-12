@@ -55,7 +55,6 @@ export default function Login(props) {
     authService.login(values.username, values.password)
       .then(
         token=>{
-          props.history.push("/discussion");
           updateAuth();
         },
         error=>{
@@ -63,6 +62,7 @@ export default function Login(props) {
           setLoading(false);
         }
       );
+      props.history.push("/discussion");
   } 
 
   if(submitted || loading || error){

@@ -29,13 +29,6 @@ const options = [
     'Check profile'
   ]
   const ITEM_HEIGHT = 48;
-  const [postData, setPostData] = useState({
-    postTitle: '',
-    postContent: '',
-    comments: [],
-    postDate: '',
-    postUser: ''
-  });
   const useStyles = makeStyles(theme => ({
     rooted: {
         '& > * + *': {
@@ -71,8 +64,20 @@ const options = [
       },
     }));
 
+
+
+const Commented=()=>{
+
+    const [expanded, setExpanded] = React.useState(false);
+    const [postData, setPostData] = useState({
+      postTitle: '',
+      postContent: '',
+      comments: [],
+      postDate: '',
+      postUser: ''
+    });
+
     function getPostData(){
-      let postID = 24;
       Axios.get('http://localhost:8000/api/discussion/showposts/24')
       .then(response=>{
         setPostData({
@@ -84,10 +89,7 @@ const options = [
         })
       });
     }
-
-const Commented=()=>{
-
-    const [expanded, setExpanded] = React.useState(false);
+    
     const handleExpandClick = () => {
         setExpanded(!expanded);
       };
