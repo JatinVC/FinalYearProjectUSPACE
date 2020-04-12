@@ -20,7 +20,7 @@ import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
-
+import {Link} from 'react-router-dom';
 
 const options = [
     'Add friend',

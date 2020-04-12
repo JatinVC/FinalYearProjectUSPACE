@@ -10,6 +10,7 @@ import GroupManager from './containers/GroupManager';
 import IndividualRoom from './components/IndividualRoom';
 import CreatePost from './containers/CreatePost';
 import { PrivateRoute } from './_services/PrivateRoute';
+import Commented from './components/Commented';
 export default function Routes(){
     return(
             <Switch>
@@ -23,6 +24,7 @@ export default function Routes(){
                 <PrivateRoute path='/projectmanager' exact component={GroupManager} />
                 <PrivateRoute path='/individualroom' exact component={IndividualRoom} />
                 <PrivateRoute path='/createpost' exact component={CreatePost} />
+                <PrivateRoute path='/discussion/24' exact component={Commented} />
             </Switch>
     );
 }

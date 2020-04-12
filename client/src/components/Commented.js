@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Head1 from './IMG/Head1.jpg'
-import place from './IMG/place.jpg'
+// import Head1 from './IMG/Head1.jpg'
+// import place from './IMG/place.jpg'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu';
 import clsx from 'clsx';
@@ -23,11 +23,19 @@ import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
+import Axios from 'axios';
 const options = [
     'Add friend',
     'Check profile'
   ]
   const ITEM_HEIGHT = 48;
+  const [postData, setPostData] = useState({
+    postTitle: '',
+    postContent: '',
+    comments: [],
+    postDate: '',
+    postUser: ''
+  });
   const useStyles = makeStyles(theme => ({
     rooted: {
         '& > * + *': {
@@ -63,6 +71,19 @@ const options = [
       },
     }));
 
+    function getPostData(){
+      let postID = 24;
+      Axios.get('http://localhost:8000/api/discussion/showposts/24')
+      .then(response=>{
+        setPostData({
+          postTitle: response.post_title,
+          postContent: response.post_content,
+          comments: [],
+          postDate: response.post_date,
+          postUser: response.post_user
+        })
+      });
+    }
 
 const Commented=()=>{
 
@@ -83,15 +104,16 @@ const Commented=()=>{
     const handleClose = () => {
       setAnchorEl(null);
     };
+    getPostData();
     return(
         <Grid container direction="row">
             <Grid item xs={2}></Grid>
             <Grid item xs={8}> 
             <Card className={classes.root}>
       <CardHeader
-        avatar={
-            <Avatar alt="Cindy Baker" src={Head1} />
-        }
+        // avatar={
+        //     <Avatar alt="Cindy Baker" src={Head1} />
+        // }
         action={
             <div>
           <IconButton
@@ -124,11 +146,11 @@ const Commented=()=>{
      
       <CardContent>
         <Typography variant="h6" color="first" component="p">
-        Today was amazing! that's a great story in my life!
+        {postData.postTitle}
         </Typography>
         <br/>
         <Typography variant="body2" color="third" component="p">
-        I woke up before my alarm clock rang and found breakfast already made for me! Is not the best! The school bus was late, my seat on it was saved, and all of my teachers were absent! I really don’t think tomorrow could be any better than today.
+        {postData.postContent}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
