@@ -54,8 +54,7 @@ export default function CreatePost(props) {
         postTitle: '',
         postContent: '',
         postCat: 1,
-        postTopic: 1,
-        postUser: 1
+        postTopic: 1
     });
     function getCategory(){
         Axios.get('http://localhost:8000/api/discussion/categories')
@@ -97,14 +96,14 @@ export default function CreatePost(props) {
     var catItems=catList.map((category)=>{
         return(<option key={category.cat_id} value={category.cat_id}>{category.cat_name}</option>);
     })
-    function handlePost() {
+    function handlePost(event) {
       let requestPayload={
         title:postData.postTitle,
         category:postData.postCat,
         topic:postData.postTopic,
         content:postData.postContent
       };
-      Axios.post("http://localhost:8000/api/createpost/16",requestPayload)
+      Axios.post(`http://localhost:8000/api/createpost/${localStorage.getItem('id')}`,requestPayload)
       .then(res=>{
         if(res.data.success){
           //TODO: fix bug when redirecting
@@ -113,6 +112,7 @@ export default function CreatePost(props) {
           console.log('post failed');
         }
       });
+      event.preventDefault();
     }
 
 

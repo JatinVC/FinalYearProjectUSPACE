@@ -78,7 +78,7 @@ const Post=(props)=>{
     const [commentData, setCommentData] = useState([]);
     const [postComment, setPostComment] = useState({
       commentContent: '',
-      commentUser: 16,
+      commentUser: localStorage.getItem('id'),
       commentPost: params.postId
     });
 
@@ -138,10 +138,14 @@ const Post=(props)=>{
       .then(res=>{
         if(res.data.success){
           console.log(res.data.message);
+          getPostData();
         }else{
           console.log(res.data.message);
         }
-      })
+      });
+      setPostComment({
+        ...postComment,commentContent:''
+      });
     }
 
     return(

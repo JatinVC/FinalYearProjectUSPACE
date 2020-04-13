@@ -22,6 +22,8 @@ function login(username, password){
     .then(response =>{
         if(response){
             localStorage.setItem('token', response.token);
+            let id = JSON.parse(atob(response.token.split('.')[1])).userId;
+            localStorage.setItem('id', id);
         }
         return response.token
     });

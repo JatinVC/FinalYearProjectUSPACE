@@ -36,14 +36,15 @@ router.post('/signup', (req, res, next) =>{
 router.post('/login', (req, res, next)=>{
     let username = req.body.username;
     let password = req.body.password;
-    let sql="SELECT user_stid, username, password, user_role FROM `users` WHERE `username`='"+username+"'";
+    let sql="SELECT user_id, username, password, user_role FROM `users` WHERE `username`='"+username+"'";
     db.query(sql, (err, results)=>{
         if(results){
             bcrypt.compare(password, results[0].password, (err, result)=>{
                 if(result){
                     var user = {
                         username: results[0].username, 
-                        userrole: results[0].user_role
+                        userRole: results[0].user_role,
+                        userId: results[0].user_id
                     }
 
                     var token = jwt.sign(user, jwtSecret, {
@@ -55,7 +56,7 @@ router.post('/login', (req, res, next)=>{
                     res.json({
                         success: true,
                         message: 'User Authenticated',
-                        token: token
+                        token: token,
                     });
                 }else{
                     res.status(401).json({
