@@ -56,13 +56,13 @@ export default function Login(props) {
       .then(
         token=>{
           updateAuth();
+          props.history.push('/discussion');
         },
         error=>{
           setError(error);
           setLoading(false);
         }
       );
-    props.history.push("/discussion");
   } 
 
   if(submitted || loading || error){

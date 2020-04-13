@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -19,6 +19,8 @@ import { red } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
+import Comment from './Comment';
+
 const options = [
     'Add friend',
     'Check profile'
@@ -61,29 +63,44 @@ const options = [
 
 
 
-const Commented=()=>{
+const Post=(props)=>{
 
     const [expanded, setExpanded] = React.useState(false);
+    const {match: {params}} = props;
+    const preventDefault = event => event.preventDefault();
     const [postData, setPostData] = useState({
       postTitle: '',
       postContent: '',
-      comments: [],
       postDate: '',
-      postUser: ''
+      postUser: '',
+      postLikes: ''
+    });
+    const [commentData, setCommentData] = useState([]);
+    const [postComment, setPostComment] = useState({
+      commentContent: '',
+      commentUser: 16,
+      commentPost: params.postId
     });
 
     function getPostData(){
-      Axios.get('http://localhost:8000/api/discussion/showposts/24')
+      Axios.get(`http://localhost:8000/api/discussion/showpost/${params.postId}`)
       .then(response=>{
-        setPostData({
-          postTitle: response.post_title,
-          postContent: response.post_content,
-          comments: [],
-          postDate: response.post_date,
-          postUser: response.post_user
-        })
+        if(response.data.success){
+          setPostData({
+            postTitle: response.data.post[0].post_title,
+            postContent: response.data.post[0].post_content,
+            postDate: response.data.post[0].post_date,
+            postUser: response.data.post[0].username,
+            postLikes: response.data.post[0].post_likes
+          });
+          setCommentData(response.data.comments);
+        }
       });
     }
+
+    useEffect(()=>{
+      getPostData();
+    }, [])
     
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -101,7 +118,32 @@ const Commented=()=>{
     const handleClose = () => {
       setAnchorEl(null);
     };
-    getPostData();
+
+    const handleChange = (event) => {
+      setPostComment({...postComment, [event.target.name]:event.target.value});
+      event.preventDefault();
+    };
+
+    var comments = commentData.map((comment)=>{
+      return(<Comment key={comment.comment_id} comment={comment}></Comment>);
+    }); 
+
+    function createComment(){
+      let requestPayload = {
+        user_id: postComment.commentUser,
+        post_id: params.postId,
+        comment: postComment.commentContent
+      }
+      Axios.post(`http://localhost:8000/api/discussion/${params.postId}/createcomment/${postComment.commentUser}`, requestPayload)
+      .then(res=>{
+        if(res.data.success){
+          console.log(res.data.message);
+        }else{
+          console.log(res.data.message);
+        }
+      })
+    }
+
     return(
         <Grid container direction="row">
             <Grid item xs={2}></Grid>
@@ -137,16 +179,16 @@ const Commented=()=>{
       </Menu>
       </div>
         }
-        title="Kitty Yan"
-        subheader="September 14, 2019"
+        title={postData.postUser}
+        subheader={postData.postDate}
       />
      
       <CardContent>
-        <Typography variant="h6" color="first" component="p">
+        <Typography variant="h6" component="p">
         {postData.postTitle}
         </Typography>
         <br/>
-        <Typography variant="body2" color="third" component="p">
+        <Typography variant="body2" component="p">
         {postData.postContent}
         </Typography>
       </CardContent>
@@ -156,10 +198,12 @@ const Commented=()=>{
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
+                name="commentContent"
+                onChange={handleChange}
+                value={postComment.commentContent}
                 label="Comment"
                
-                id="password"
+                id="Comment"
               />
            
             
@@ -177,13 +221,7 @@ const Commented=()=>{
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>The Comments:</Typography>
-          <Typography paragraph>
-         Comment1: I like this girl 
-         <br/>
-         Comment2:Oh, the sky is beautiful
-         <br/>
-         Comment3:Yo, 1+1=2 check it out
-          </Typography>
+          {comments}
           
         </CardContent>
       </Collapse>
@@ -193,12 +231,13 @@ const Commented=()=>{
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={createComment}
           >
-            Submit you Comment
+            Submit your Comment
           </Button>
       </Card></Grid>
             <Grid item xs={2}></Grid>
         </Grid>
     )
 }
-export default Commented
+export default Post

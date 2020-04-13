@@ -1,6 +1,7 @@
 var router = require('express').Router();
 var _ = require('lodash');
 var moment = require('moment');
+var async = require('async');
 
 //post all the information to the database
 router.post('/createpost/:user_id', function(req, res, next){
@@ -31,7 +32,7 @@ router.post('/createpost/:user_id', function(req, res, next){
 
 //show posts on seperate page
 router.get('/discussion/showposts', function(req, res, next){
-    var sql = `SELECT * FROM post`;
+    var sql = `SELECT * FROM post ORDER BY post_date`;
     db.query(sql, function(err, results){
         if(results){
             _.each(results, (element)=>{
@@ -75,21 +76,42 @@ router.get('/discussion/showposts/:topicid', (req, res, next)=>{
 });
 
 //post on an individual page, with comments
-router.get('/discussion/showposts/:post_id', (req, res, next)=>{
-    var sql = `SELECT * FROM post WHERE post_id='${req.params.post_id}' UNION SELECT * FROM comments WHERE comment_post='${req.params.post_id}'`
-    db.query(sql, (err, results)=>{
-        if(results){
-            _.each(results, (element)=>{
-                element.post_date = moment(element.post_date).format("MMMM Do YYYY, h:mm:ss a");
+router.get('/discussion/showpost/:post_id', (req, res, next)=>{
+    var postSql = `SELECT post_id, post_title, post_content, post_date, post_likes, username FROM post
+    LEFT JOIN users ON post.post_user=users.user_id
+    WHERE post_id='${req.params.post_id}'`;
+    
+    var commentSql = `SELECT comment_id, comment_content, comment_date, comment_user, username FROM comments 
+    LEFT JOIN post ON post.post_id = comments.comment_post 
+    LEFT JOIN users ON comments.comment_user = users.user_id
+    WHERE post.post_id='${req.params.post_id}'`;
+
+    var postQuery = (callback)=>{
+        db.query(postSql, callback);
+    }
+    
+    var commentQuery = (callback)=>{
+        db.query(commentSql, callback);
+    }
+
+    async.parallel({
+        post: postQuery,
+        comment: commentQuery
+    }, (err, results)=>{
+        if(err){
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                message: err
+            });
+        }else{
+            _.forEach(results.post[0], post=>{
+                post.comments=_.filter(results.comment[0], {comment_post: post.post_id});
             });
             res.json({
                 success: true,
-                post: results
-            });
-        }else{
-            res.status(404).json({
-                success: false,
-                message: err
+                post: results.post[0],
+                comments: results.comment[0]
             });
         }
     });
@@ -100,8 +122,8 @@ router.post('/discussion/:post_id/createcomment/:user_id', (req, res, next)=>{
     let user = req.params.user_id;
     let post = req.params.post_id;
     let content = req.body.comment;
-    var sql = `INSERT INTO comments(comment_user, comment_content, comment_post) VALUES(?,?,?)`;
-    db.query(sql, [user, content, post], (err, results)=>{
+    var sql = `INSERT INTO comments(comment_user, comment_content, comment_post) VALUES ('${user}','${content}','${post}')`;
+    db.query(sql, (err, results)=>{
         if(results){
             res.json({
                 success: true,
@@ -119,9 +141,9 @@ router.post('/discussion/:post_id/createcomment/:user_id', (req, res, next)=>{
 
 //update likes counter
 router.post('/discussion/:post_id/likepost', (req, res, next)=>{
-    var sql = `UPDATE post SET post_likes = post_likes+1 WHERE post_id='${req.params.post_id}'`;
+    var sql = `UPDATE post SET post_likes=post_likes+1 WHERE post_id='${req.params.post_id}'`;
     db.query(sql, (err, result)=>{
-        if(results){
+        if(result){
             res.json({
                 success: true,
                 message: 'like added'
@@ -140,6 +162,7 @@ router.get('/discussion/:post_id/getlikes', (req, res, next)=>{
     var sql = `SELECT post_likes FROM post WHERE post_id='${req.params.post_id}'`;
     db.query(sql, (err, result)=>{
         if(result){
+            console.log(result)
             res.json({
                 success: true,
                 likes: result
@@ -188,4 +211,5 @@ router.get('/discussion/categories', (req, res, next)=>{
         }
     });
 });
+
 module.exports.router = router;

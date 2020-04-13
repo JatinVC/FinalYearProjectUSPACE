@@ -188,6 +188,7 @@ export default function CreatePost(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handlePost}
           >
             Create Post
           </Button>

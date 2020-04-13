@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography'
 import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
+import {Badge} from '@material-ui/core';
+import Axios from 'axios';
 
 const options = [
     'Add friend',
@@ -59,12 +61,28 @@ const PostCard =(props) =>{
     const classes = useStyles();
    
     const [anchorEl, setAnchorEl] = useState(null);
+    // const [likes, setLikes] = useState();
     const open = Boolean(anchorEl);
   
     const handleClick = event => {
       setAnchorEl(event.currentTarget);
     };
-  
+
+    // const updateLikes = event =>{
+    //   Axios.post(`http://localhost:8000/api/discussion/${props.post.post_id}/likepost`)
+    //   .then(res=>{
+    //     if(res.data.success){
+    //       Axios.get(`http://localhost:8000/api/discussion/${props.post.post_id}/getlikes`)
+    //       .then(res=>{
+    //         if(res.data.success){
+    //           setLikes(res.data.post_likes);
+    //         }
+    //       });
+    //     }
+    //   });
+    //   event.preventDefault();
+    // };
+    // setLikes(props.post.post_likes);
     const handleClose = () => {
       setAnchorEl(null);
     };
@@ -116,13 +134,15 @@ const PostCard =(props) =>{
           <Typography paragraph>
           {props.post.post_content}
           </Typography>
-          <IconButton aria-label="add to favorites" /* update likes function here */>
-            <FavoriteIcon />
+          <IconButton aria-label="add to favorites" >
+            {/* <Badge badgeContent={props.post.post_likes} color="secondary"> */}
+              <FavoriteIcon />
+            {/* </Badge> */}
           </IconButton>
-          <Link className={classes.link} to='/Commented'>Add a Comment</Link>
+          <Link className={classes.link} to={`/discussion/${props.post.post_id}`}>Add a Comment</Link>
         </CardContent>
       </Card>
   )
 }
 
-export default PostCard
+export default PostCard;

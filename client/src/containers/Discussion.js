@@ -89,7 +89,7 @@ function Discussion (){
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
-                    Our aim is build a powerful place for student community, make the distance between student and their dream closer together.
+                    Our aim is build a powerful place for the student community, make the distance between student and their dream closer together.
                     </Typography>
                 </ExpansionPanelDetails>
              </ExpansionPanel>
@@ -117,7 +117,7 @@ function Discussion (){
             {postCards}
             </Grid>
             <Grid item xs={2}>
-            <Typography variant='h6'>Want make announcement?</Typography>
+            <Typography variant='h6'>Want to make an announcement?</Typography>
                 <br/>
                 <Button component={ReLink} variant="outlined" color="primary" to='/createpost'>
                 <AddIcon/>  Add a post
