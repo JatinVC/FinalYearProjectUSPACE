@@ -13,8 +13,10 @@ function getIDToken(){
 function login(username, password){
     const requestOptions = {
         method: 'POST',
+        // credentials: 'include',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
+        
     };
 
     return fetch('http://localhost:8000/api/login', requestOptions)

@@ -32,7 +32,7 @@ router.post('/createpost/:user_id', function(req, res, next){
 
 //show posts on seperate page
 router.get('/discussion/showposts', function(req, res, next){
-    var sql = `SELECT * FROM post ORDER BY post_date`;
+    var sql = `SELECT post_id, post_content, post_date, post_cat, post_topic, post_user, post_likes, username FROM post LEFT JOIN users ON post.post_user=users.user_id ORDER BY post_date DESC`;
     db.query(sql, function(err, results){
         if(results){
             _.each(results, (element)=>{
@@ -107,6 +107,7 @@ router.get('/discussion/showpost/:post_id', (req, res, next)=>{
         }else{
             _.forEach(results.post[0], post=>{
                 post.comments=_.filter(results.comment[0], {comment_post: post.post_id});
+                post.post_date = moment(results.post_date).format("MMMM Do YYYY, h:mm:ss a");
             });
             res.json({
                 success: true,
@@ -206,6 +207,27 @@ router.get('/discussion/categories', (req, res, next)=>{
         }else{
             res.status(400).json({
                 success:false,
+                error: err
+            });
+        }
+    });
+});
+
+//get teacher reviews for a certain subject
+router.get('/teacherreview/:cat_id', (req, res, next)=>{
+    var sql = `SELECT post_id, post_content, post_date, post_cat, post_topic, post_user, post_likes, username FROM post LEFT JOIN users ON post.post_user=users.user_id WHERE (post_cat='${req.params.cat_id}' AND post_topic=5) ORDER BY post_date DESC`
+    db.query(sql, (err, results)=>{
+        if(results){
+            _.each(results, (element)=>{
+                element.post_date = moment(element.post_date).format("MMMM Do YYYY, h:mm:ss a");
+            });
+            res.json({
+                success: true,
+                reviews: results
+            });
+        }else{
+            res.status(400).json({
+                success: false,
                 error: err
             });
         }

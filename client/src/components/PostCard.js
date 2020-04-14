@@ -118,7 +118,7 @@ const PostCard =(props) =>{
       </Menu>
       </div>
         }
-        title={props.post.post_user}
+        title={props.post.username}
         subheader={props.post.post_date}
       />
       

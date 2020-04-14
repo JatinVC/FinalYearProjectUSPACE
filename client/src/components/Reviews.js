@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -7,7 +7,10 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import {Link} from "react-router-dom";
-import TeacherCard from "./TeacherCard"
+import Axios from 'axios';
+import PostCard from './PostCard';
+import AddIcon from '@material-ui/icons/Add';
+
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -25,10 +28,28 @@ const useStyles = makeStyles({
   },
  
 });
-export default function OutlinedCard() {
+export default function OutlinedCard(props) {
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
+    const [reviews, setReviews] = useState([]);
 
+
+    function getReviews(){
+      const {match: {params}} = props;
+      Axios.get(`http://localhost:8000/api/teacherreview/${params.catId}`)
+      .then(res=>{
+        if(res.data.success){
+          setReviews(res.data.reviews);
+        }
+      });
+    }
+
+    useEffect(()=>{
+      getReviews();
+    }, [])
+
+    const renderReviews = reviews.map(post=>{
+      return(<PostCard key={post.post_id} post={post}></PostCard>);
+    });
   
     return (
       <Grid container direction="row">
@@ -52,47 +73,15 @@ export default function OutlinedCard() {
         </CardContent>
         <CardActions>
         <Link to= 'TeacherReview'>Back</Link>
+          <Button component={Link} variant="outlined" color="primary" to='/createpost'>
+            <AddIcon/>  Add a post
+          </Button>
         </CardActions>
+        
       </Card>
       </Grid>
       <Grid xs={10} container direction="row" spacing={2}>
-        <Grid item xs={4}>
-        <TeacherCard></TeacherCard>
-        </Grid>
-         
-          <Grid item xs={4}>
-          <TeacherCard></TeacherCard>
-          </Grid>
-        
-          <Grid item xs={4}>
-          <TeacherCard></TeacherCard>
-          
-          </Grid>
-          <Grid item xs={4}>
-        <TeacherCard></TeacherCard>
-        </Grid>
-         
-          <Grid item xs={4}>
-          <TeacherCard></TeacherCard>
-          </Grid>
-        
-          <Grid item xs={4}>
-          <TeacherCard></TeacherCard>
-          
-          </Grid>
-          <Grid item xs={4}>
-        <TeacherCard></TeacherCard>
-        </Grid>
-         
-          <Grid item xs={4}>
-          <TeacherCard></TeacherCard>
-          </Grid>
-        
-          <Grid item xs={4}>
-          <TeacherCard></TeacherCard>
-          
-          </Grid>
-          
+        {renderReviews}
       </Grid>
       </Grid>
     );

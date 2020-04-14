@@ -120,7 +120,7 @@ function Discussion (){
             <Typography variant='h6'>Want to make an announcement?</Typography>
                 <br/>
                 <Button component={ReLink} variant="outlined" color="primary" to='/createpost'>
-                <AddIcon/>  Add a post
+                  <AddIcon/>  Add a post
                 </Button>
             <hr/>
             <Typography variant='h6'>You may also like:</Typography>
