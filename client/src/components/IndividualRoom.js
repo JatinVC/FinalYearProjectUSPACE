@@ -1,18 +1,14 @@
-import React from 'react'
-
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Ricky from '../Img/Ricky.jpeg'
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid'
-import Menu from '@material-ui/core/Menu';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import {Link} from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
 import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import Axios from 'axios';
+import Task from './Task';
+import _ from 'lodash';
+import { Card, CardActionArea } from '@material-ui/core';
+import {Button} from '@material-ui/core'
+
 const options = [
     'Detail of the room',
     'Clear screen'
@@ -53,76 +49,56 @@ const options = [
       },
     }));
   
-const IndividualRoom =() =>{
+const IndividualRoom = (props) =>{
 
     const classes = useStyles();
-   
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-  
-    const handleClick = event => {
-      setAnchorEl(event.currentTarget);
-    };
-  
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
+    const [tasks, setTasks] = useState([]);
+    const {match: {params}} = props;
+    function getTasks(){
+      Axios.get(`http://localhost:8000/api/groupmanager/projects/${params.projectId}/gettasks`)
+      .then(res=>{
+        if(res.data.success){
+          setTasks(res.data.tasks);
+        }
+      });
+    }
+
+    function deleteTask(task){
+      Axios.post(`http://localhost:8000/api/groupmanager/projects/${params.projectId}/deletetask/${task}`)
+      .then(res=>{
+          if(res.data.success){
+            const data = _.filter(tasks, (element)=>element.task_id!=task);
+            setTasks(data);
+            console.log('task deleted');
+          }
+      });
+    }
+    
+    useEffect(()=>{
+      getTasks();
+    }, []);
+
+    var renderTasks = tasks.map((task)=>{
+      return(<Task key={task.task_id} task={task} projectId={params.projectId} deleteTask={deleteTask}></Task>);
+    });
     
     return(
-     <Grid container direction="column" xs={12}>
-         <Grid>
-    <Card className={classes.root}>
-        
-      <CardHeader
-        
-        avatar={
-            
-            <Avatar alt="Cindy Baker" src={Ricky} />
-        }
-        action={
-            
-            <div>
-            <Link to="/GroupManager">Back</Link>
-          <IconButton
-          aria-label="more"
-          aria-controls="long-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-            <MoreVertIcon />
-            </IconButton>
-      <Menu id="long-menu"  anchorEl={anchorEl} keepMounted open={open}  onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: '20ch',
-          },
-        }}
-      >
-        {options.map(option => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-      </div>
-        }
-        title="Welcome to Ares's Room!!!!"
-        subheader="September 14, 2019"
-      />
-     
-      </Card>
-      </Grid>
-            <Grid container direction="row" >
-                <Grid item xs={2} >
-                <Typography variant="h5">Room person(4/12)</Typography>
-                <Typography variant="h6">Jack <br/> Ares <br/> Nick <br/> David</Typography>
-                </Grid>
-                <Grid item xs={10}>
-                    <Typography ></Typography>
-                </Grid>
-
-            </Grid>
+      <Grid container direction="column" xs={12}>
+        <Grid container direction="row">
+          <Card>
+            <CardActionArea>
+              <Button component={Link} variant="outlined" color="primary" to={`/addtask/${params.projectId}`}>
+                Add Task
+              </Button>
+              <Button component={Link} variant="outlined" color="primary" to={`/adduser/${params.projectId}`}>
+                Add User
+              </Button>
+            </CardActionArea>
+          </Card>
+        </Grid>
+        <Grid container direction="row" >
+          {renderTasks}
+        </Grid>
       </Grid>
       
     );

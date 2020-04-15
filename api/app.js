@@ -37,11 +37,13 @@ app.use(cookieParser());
 var post = require('./routes/posts');
 var auth = require('./routes/auth');
 var user = require('./routes/user');
+var groupmanager = require('./routes/groupmanager');
 
 //routing the mounting
 app.use('/api', post.router);
 app.use('/api', auth.router);
 app.use('/api', user.router);
+app.use('/api', groupmanager.router);
 
 
 module.exports = app;

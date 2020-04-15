@@ -19,177 +19,28 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MediaCard() {
+export default function MediaCard(props) {
     const classes = useStyles();
   
     return (
       <Grid container direction='row' spacing={2}>
         <Grid item xs={4}>
-      <Card className={classes.root}>
-      <Typography gutterBottom variant="h5" component="h2">
-              Room
-            </Typography>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={Ricky}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
+          <Card className={classes.root}>
             <Typography gutterBottom variant="h5" component="h2">
-              Ricky's room
+              Project
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Come to talk about assignment!!!
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          
-          <Link to='/IndividualRoom'>join</Link>
-         
-        </CardActions>
-      </Card>
+            <CardActionArea>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {props.project.project_title}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Link to={`/individualroom/${props.project.project_id}`}>Join</Link>
+            </CardActions>
+          </Card>
         </Grid>
-
-        <Grid item xs={4}>
-      <Card className={classes.root}>
-      <Typography gutterBottom variant="h5" component="h2">
-              Room
-            </Typography>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={David}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              David's room
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Come to talk about Games!!!
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          
-          <Link to='/IndividualRoom'>join</Link>
-         
-        </CardActions>
-      </Card>
-        </Grid>
-        <Grid item xs={4}>
-      <Card className={classes.root}>
-      <Typography gutterBottom variant="h5" component="h2">
-              Room
-            </Typography>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={Ricky}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Ricky's room
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Come to talk about assignment!!!
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          
-          <Link to='/IndividualRoom'>join</Link>
-         
-        </CardActions>
-      </Card>
-        </Grid>
-
-        <Grid item xs={4}>
-      <Card className={classes.root}>
-      <Typography gutterBottom variant="h5" component="h2">
-              Room
-            </Typography>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={David}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              David's room
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Come to talk about Games!!!
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          
-          <Link to='/IndividualRoom'>join</Link>
-         
-        </CardActions>
-      </Card>
-        </Grid>
-        <Grid item xs={4}>
-      <Card className={classes.root}>
-      <Typography gutterBottom variant="h5" component="h2">
-              Room
-            </Typography>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={Ricky}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              Ricky's room
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Come to talk about assignment!!!
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          
-          <Link to='/IndividualRoom'>join</Link>
-         
-        </CardActions>
-      </Card>
-        </Grid>
-
-        <Grid item xs={4}>
-      <Card className={classes.root}>
-      <Typography gutterBottom variant="h5" component="h2">
-              Room
-            </Typography>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={David}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              David's room
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Come to talk about Games!!!
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          
-          <Link to='/IndividualRoom'>join</Link>
-         
-        </CardActions>
-      </Card>
-        </Grid>
-
-        </Grid>
+      </Grid>
     );
   }

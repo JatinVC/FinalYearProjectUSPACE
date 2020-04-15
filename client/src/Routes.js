@@ -22,7 +22,7 @@ export default function Routes(){
                 <PrivateRoute path='/discussion' exact component={Discussion} />
                 <PrivateRoute path='/teacherreview' exact component={TeacherReview} />
                 <PrivateRoute path='/projectmanager' exact component={GroupManager} />
-                <PrivateRoute path='/individualroom' exact component={IndividualRoom} />
+                <PrivateRoute path='/individualroom/:projectId' exact component={IndividualRoom} />
                 <PrivateRoute path='/createpost' exact component={CreatePost} />
                 <PrivateRoute path='/discussion/:postId' exact component={Post} />
                 <PrivateRoute path='/teacherreview/:catId' exact component={Reviews} />

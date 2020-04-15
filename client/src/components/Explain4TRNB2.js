@@ -4,6 +4,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 import Typography from '@material-ui/core/Typography';
+import { CardMedia, Button } from '@material-ui/core';
+import {Link} from 'react-router-dom';
+
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +45,9 @@ export default function OutlinedCard() {
             <br />
             {'"Remember:Always be nice"'}
           </Typography>
+          <Button component={Link} variant="outlined" color="primary" to='/createproject'>
+            Create a project
+          </Button>
         </CardContent>
        
       </Card>
