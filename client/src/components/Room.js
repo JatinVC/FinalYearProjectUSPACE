@@ -37,7 +37,7 @@ export default function MediaCard(props) {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Link to={`/individualroom/${props.project.project_id}`}>Join</Link>
+              <Link to={`/projectmanager/${props.project.project_id}`}>Join</Link>
             </CardActions>
           </Card>
         </Grid>

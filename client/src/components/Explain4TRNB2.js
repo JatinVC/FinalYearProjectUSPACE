@@ -45,7 +45,7 @@ export default function OutlinedCard() {
             <br />
             {'"Remember:Always be nice"'}
           </Typography>
-          <Button component={Link} variant="outlined" color="primary" to='/createproject'>
+          <Button component={Link} variant="outlined" color="primary" to='/projectmanager/createproject'>
             Create a project
           </Button>
         </CardContent>

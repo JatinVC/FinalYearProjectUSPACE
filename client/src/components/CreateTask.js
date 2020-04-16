@@ -1,57 +1,65 @@
-import React from 'react'
+import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import InputLabel from '@material-ui/core/InputLabel'
-const Task=()=>{
-    return(
-    <Grid container direction='row'>
-        <Grid item xs={3}></Grid>
-       
-        <Grid item xs={6} spacing={2} container direction='row'  >
-      
-            <Grid item xs={8} >
-            <br/>  <br/>  
-            <TextField
-                name="postTitle"
-                variant="outlined"
-                required
-                fullWidth
-               
-                label="Task Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={4}>
-            <br/>  <br/>  
-            <TextField
-                name="postTitle"
-                variant="outlined"
-                required
-                fullWidth
-               
-                label="Task User"
-                autoFocus
-              />
-           
-                </Grid>
-                <Grid item xs={9}>
-                <TextField
-                 multiline rows="10"
-                name="postTitle"
-                variant="outlined"
-                required
-                fullWidth
-               
-                label="Task Content"
-                autoFocus
-              />
-                </Grid>
-        </Grid>
+import {Button} from '@material-ui/core';
+import Axios from 'axios'
+const Task=(props)=>{
+  const {match: {params}} = props;
+  const [task, setTask] = useState({
+    taskContent: '',
+    taskProject: params.projectId,
+    taskUser: localStorage.getItem('id')
+  });
+  const [message, setMessage] = useState('');
 
-        <Grid item xs={3}></Grid>
+  function createTask(){
+    let requestPayload = {
+      taskContent: task.taskContent
+    };
+    Axios.post(`http://localhost:8000/api/groupmanager/projects/${task.taskProject}/createtask/${task.taskUser}`, requestPayload)
+    //groupmanager/projects/:project_id/createtask/:user_id
+    .then(res=>{
+      if(res.data.success){
+        props.history.push(`/projectmanager/${task.taskProject}`);
+      }else{
+        setMessage('task creation failed')
+      }
+    });
+  }
+
+  const handleChange = (event) => {
+    setTask({...task, [event.target.name]:event.target.value});
+    event.preventDefault();
+  };
+
+  return(
+    <Grid container direction='row'>
+      <Grid item xs={3}>
+        <TextField
+        multiline rows="2"
+        name="taskContent"
+        variant="outlined"
+        required
+        fullWidth
+        onChange={handleChange}
+        label="Task Content"
+        autoFocus
+        />
+        <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={createTask}
+        >
+          Create task
+        </Button>
+      </Grid>
+      {message}
     </Grid>
-    )
+  )
 }
 export default Task

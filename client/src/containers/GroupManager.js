@@ -31,15 +31,13 @@ function TeacherReview(){
     });
     return(
         <Grid container direction='row'>
-        <Grid xs={2}>
-            <Explain4TRNB2/>
-        </Grid>
-        <Grid container direction='row' xs={10}>
-           
-            {renderUserProjects}
-            {renderInvProjects}
-           
-        </Grid>
+            <Grid xs={3}>
+                <Explain4TRNB2/>
+            </Grid>
+            <Grid xs={9}>
+                {renderUserProjects}
+                {renderInvProjects}
+            </Grid>
         </Grid>
         
     )

@@ -83,14 +83,14 @@ const IndividualRoom = (props) =>{
     });
     
     return(
-      <Grid container direction="column" xs={12}>
-        <Grid container direction="row">
+      <Grid container item direction="column" xs={12}>
+        <Grid item direction="row">
           <Card>
             <CardActionArea>
-              <Button component={Link} variant="outlined" color="primary" to={`/addtask/${params.projectId}`}>
+              <Button component={Link} variant="outlined" color="primary" to={`/projectmanager/${params.projectId}/createtask`}>
                 Add Task
               </Button>
-              <Button component={Link} variant="outlined" color="primary" to={`/adduser/${params.projectId}`}>
+              <Button component={Link} variant="outlined" color="primary" to={`/projectmanager/${params.projectId}/adduser`}>
                 Add User
               </Button>
             </CardActionArea>
@@ -100,9 +100,7 @@ const IndividualRoom = (props) =>{
           {renderTasks}
         </Grid>
       </Grid>
-      
-    );
-        
+    );       
 }
 
 export default IndividualRoom
