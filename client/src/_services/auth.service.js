@@ -26,8 +26,12 @@ function login(username, password){
             localStorage.setItem('token', response.token);
             let id = JSON.parse(atob(response.token.split('.')[1])).userId;
             localStorage.setItem('id', id);
+            let userrole = JSON.parse(atob(response.token.split('.')[1])).userRole;
+            localStorage.setItem('role', userrole);
+            let username = JSON.parse(atob(response.token.split('.')[1])).username;
+            localStorage.setItem('username', username);
         }
-        return response.token
+        return response.token;
     });
 }
 

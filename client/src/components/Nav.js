@@ -10,8 +10,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import Drawer from './Drawer';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import {Avatar} from '@material-ui/core';
 import {Menu} from '@material-ui/core';
+import {AccountCircle} from '@material-ui/icons';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
 // import {Badge} from '@material-ui/core';
 import {MenuItem} from '@material-ui/core';
@@ -144,8 +145,13 @@ const Nav = (props) =>{
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
-            >
+
+            >{authenticated?(
+              <Avatar alt={localStorage.getItem('username')} src={`https://ui-avatars.com/api/?name=${localStorage.getItem('username')}`}/>
+            ):(
               <AccountCircle />
+            )}
+              
             </IconButton>
           </Toolbar>
         </AppBar>

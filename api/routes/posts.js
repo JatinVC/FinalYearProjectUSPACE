@@ -52,10 +52,10 @@ router.get('/discussion/showposts', function(req, res, next){
     });
 });
 
-//make post with a specific topic be seen
-router.get('/discussion/showposts/:topicid', (req, res, next)=>{
-    let topicId = req.params.topicid; 
-    var sql = `SELECT * FROM post WHERE post_topic = '${topicId}'`
+//make post with a specific category be seen
+router.get('/discussion/showposts/:categoryid', (req, res, next)=>{
+    let categoryId = req.params.categoryid; 
+    var sql = `SELECT * FROM post WHERE post_cat = '${categoryId}'`;
     db.query(sql, (err, results)=>{
         if(results){
             _.each(results, (element)=>{
@@ -234,4 +234,21 @@ router.get('/teacherreview/:cat_id', (req, res, next)=>{
     });
 });
 
+//create new category
+router.post('/discussion/createcat', (req, res, next)=>{
+    var sql = `INSERT INTO category(cat_name, cat_desc) VALUES ('${req.body.catName}','${req.body.catDesc}')`;
+    db.query(sql, (err, result)=>{
+        if(err){
+            res.status(400).json({
+                success: false,
+                message: 'category could not be created'
+            });
+        }else{
+            res.json({
+                success: true,
+                message: 'category created'
+            });
+        }
+    });
+});
 module.exports.router = router;

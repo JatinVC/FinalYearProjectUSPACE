@@ -86,7 +86,13 @@ export default function AppDrawer(props) {
             >
                 <ListItemText primary={'Home'} />
             </ListItem>
-
+            <ListItem button
+                component={Link}
+                to="/dashboard"
+                onClick={handleDrawerClose}
+            >
+                <ListItemText primary={'Dashboard'} />
+            </ListItem>
             <ListItem button
                 component={Link}
                 to="/discussion"
@@ -99,7 +105,7 @@ export default function AppDrawer(props) {
                 to="/TeacherReview"
                 onClick={handleDrawerClose}
             >
-                <ListItemText primary={'TeacherReview'} />
+                <ListItemText primary={'Teacher Review'} />
             </ListItem>
             <ListItem button
                 component={Link}

@@ -62,10 +62,10 @@ router.post('/approve/:user_id', (req, res, next)=>{
     });
 });
 
-// change user role for admin only
-router.post('/changerole/:user_id/torole/:newrole', (req, res, next)=>{
-    var sql = `UPDATE users SET user_role=? WHERE(user_id='${req.params.user_id}')`;
-    db.query(sql, [req.params.newrole], (err, results)=>{
+// change user role to moderator for admins only
+router.post('/changerole/:user_id', (req, res, next)=>{
+    var sql = `UPDATE users SET user_role=2 WHERE(user_id='${req.params.user_id}')`;
+    db.query(sql, (err, results)=>{
         if(results){
             res.json({
                 success: true,

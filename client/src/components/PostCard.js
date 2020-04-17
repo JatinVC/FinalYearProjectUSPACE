@@ -90,7 +90,7 @@ const PostCard =(props) =>{
     <Card className={classes.root}>
       <CardHeader
         avatar={
-            <Avatar alt="Cindy Baker" src={Head1} /> //handle avatar generation later
+            <Avatar alt={props.post.username} src={`https://ui-avatars.com/api/?name=${props.post.username}`} /> 
         }
         action={
             <div>
@@ -123,9 +123,9 @@ const PostCard =(props) =>{
       />
       
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+        {/* <Typography variant="body2" color="textSecondary" component="p">
         {props.post.post_topic}
-        </Typography>
+        </Typography> */}
       </CardContent>
         <CardContent>
           <Typography variant='h6'>

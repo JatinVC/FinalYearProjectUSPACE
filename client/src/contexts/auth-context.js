@@ -18,6 +18,16 @@ const getUserFromToken = token =>{
     return null;
 }
 
+const getRoleFromToken = token =>{
+    if(token){
+        try{
+            return JSON.parse(atob(token.split('.')[1])).userRole;
+        }catch(error){
+            
+        }
+    }
+}
+
 export const AuthProvider = ({ children }) =>{
     let validToken = false;
     let token = authService.getIDToken();
@@ -34,10 +44,12 @@ export const AuthProvider = ({ children }) =>{
     const initialState = validToken ? {
         token: token,
         user: getUserFromToken,
+        role: getRoleFromToken,
         authenticated: true
     } : {
         token: undefined,
         user: null,
+        role: null, 
         authenticated: false
     };
 
@@ -49,12 +61,14 @@ export const AuthProvider = ({ children }) =>{
           setState({
             token,
             user: getUserFromToken(token),
+            role: getRoleFromToken(token),
             authenticated: true
           })
         } else if(token === null) {
           setState({
             token: undefined,
             user: null,
+            role: null,
             authenticated: false
           })
         }
