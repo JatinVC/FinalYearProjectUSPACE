@@ -25,4 +25,4 @@ yarn-error.log*
 ./client/buildAndDeploy.bat
 
 #build files
-./client/build/
+./client/build
