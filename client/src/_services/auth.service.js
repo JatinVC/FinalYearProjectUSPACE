@@ -1,4 +1,5 @@
 import { handleResponse } from "../_helpers/handle-response";
+import {buildURL} from '../_helpers/url-builder';
 
 export const authService = {
     login,
@@ -19,7 +20,7 @@ function login(username, password){
         
     };
 
-    return fetch('http://localhost:8000/api/login', requestOptions)
+    return fetch(buildURL('/api/login'), requestOptions)
     .then(handleResponse)
     .then(response =>{
         if(response){

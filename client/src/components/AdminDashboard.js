@@ -7,6 +7,7 @@ import {Select} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { buildURL } from '../_helpers/url-builder';
 
 
 export default function AdminDashboard() {
@@ -24,7 +25,7 @@ export default function AdminDashboard() {
     };
 
     function getUsers(){
-        Axios.get('http://localhost:8000/api/getusers')
+        Axios.get(buildURL('/api/getusers'))
         .then(res=>{
             setUserList(res.data.users.map((user)=>{
                 return{
@@ -40,7 +41,7 @@ export default function AdminDashboard() {
     }, [])
 
     function postUser(){
-        Axios.post(`http://localhost:8000/api/changerole/${user.userId}`)
+        Axios.post(buildURL(`/api/changerole/${user.userId}`))
         .then(res=>{
             if(res.data.success){
                 console.log('operation successful');

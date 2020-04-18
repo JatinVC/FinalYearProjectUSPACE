@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react'
-import Grid from '@material-ui/core/Grid'
-import Explain4TRNB2 from '../components/Explain4TRNB2'
-import Room from '../components/Room'
+import React, {useState, useEffect} from 'react';
+import Grid from '@material-ui/core/Grid';
+import Explain4TRNB2 from '../components/Explain4TRNB2';
+import Room from '../components/Room';
 import axios from 'axios';
+import {buildURL} from '../_helpers/url-builder';
+
 function TeacherReview(){
     const [projects, setProjects] = useState({
         userprojects: [],
@@ -10,7 +12,7 @@ function TeacherReview(){
     });
 
     function getProjects(){
-        axios.get(`http://localhost:8000/api/groupmanager/projects/${localStorage.getItem('id')}`)
+        axios.get(buildURL(`/api/groupmanager/projects/${localStorage.getItem('id')}`))
         .then(res=>{
             setProjects({
                 userprojects: res.data.userprojects,

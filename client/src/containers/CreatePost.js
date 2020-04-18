@@ -12,7 +12,7 @@ import Axios from 'axios';
 import {FormControl} from '@material-ui/core';
 import {InputLabel} from '@material-ui/core';
 import {Select} from '@material-ui/core';
-
+import {buildURL} from '../_helpers/url-builder';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -57,7 +57,7 @@ export default function CreatePost(props) {
         postTopic: 1
     });
     function getCategory(){
-        Axios.get('http://localhost:8000/api/discussion/categories')
+        Axios.get(buildURL('/api/discussion/categories'))
         .then(res=>{
             if(res.data.success){
                 setCatList(res.data.category);
@@ -68,7 +68,7 @@ export default function CreatePost(props) {
     }
 
     function getTopics(){
-        Axios.get('http://localhost:8000/api/discussion/topics')
+        Axios.get(buildURL('/api/discussion/topics'))
         .then(res=>{
             if(res.data.success){
                 setTopicList(res.data.topics);
@@ -103,7 +103,7 @@ export default function CreatePost(props) {
         topic:postData.postTopic,
         content:postData.postContent
       };
-      Axios.post(`http://localhost:8000/api/createpost/${localStorage.getItem('id')}`,requestPayload)
+      Axios.post(buildURL(`/api/createpost/${localStorage.getItem('id')}`),requestPayload)
       .then(res=>{
         if(res.data.success){
           //TODO: fix bug when redirecting

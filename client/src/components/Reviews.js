@@ -10,6 +10,7 @@ import {Link} from "react-router-dom";
 import Axios from 'axios';
 import PostCard from './PostCard';
 import AddIcon from '@material-ui/icons/Add';
+import {buildURL} from '../_helpers/url-builder';
 
 const useStyles = makeStyles({
   root: {
@@ -35,7 +36,7 @@ export default function OutlinedCard(props) {
 
     function getReviews(){
       const {match: {params}} = props;
-      Axios.get(`http://localhost:8000/api/teacherreview/${params.catId}`)
+      Axios.get(buildURL(`/api/teacherreview/${params.catId}`))
       .then(res=>{
         if(res.data.success){
           setReviews(res.data.reviews);
@@ -72,7 +73,7 @@ export default function OutlinedCard(props) {
           </Typography>
         </CardContent>
         <CardActions>
-        <Link to= 'TeacherReview'>Back</Link>
+        <Link to= '/TeacherReview'>Back</Link>
           <Button component={Link} variant="outlined" color="primary" to='/createpost'>
             <AddIcon/>  Add a post
           </Button>

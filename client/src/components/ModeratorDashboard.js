@@ -4,6 +4,7 @@ import {Button} from '@material-ui/core';
 import {TextField} from '@material-ui/core';
 import {Grid} from '@material-ui/core';
 import Axios from 'axios';
+import { buildURL } from '../_helpers/url-builder';
 export default function ModeratorDashboard() {
     const [category, setCategory] = useState({
         catName: '',
@@ -20,7 +21,7 @@ export default function ModeratorDashboard() {
             catName: category.catName,
             catDesc: category.catDesc
         }
-        Axios.post('http://localhost:8000/api/discussion/createcat', requestPayload)
+        Axios.post(buildURL('/api/discussion/createcat'), requestPayload)
         .then(res=>{
             if(res.data.success){
                 console.log('category created successfully');

@@ -11,6 +11,7 @@ import Axios from 'axios';
 import {FormControl} from '@material-ui/core';
 import {InputLabel} from '@material-ui/core';
 import {Select} from '@material-ui/core';
+import {buildURL} from '../_helpers/url-builder';
 
 export default function AddUser(props) {
     const [userList, setUserList] = useState([{
@@ -24,7 +25,7 @@ export default function AddUser(props) {
     const {match: {params}} = props;
 
     function getUsers(){
-        Axios.get(`http://localhost:8000/api/getusers`)
+        Axios.get(buildURL(`/api/getusers`))
         .then(res=>{
             if(res.data.success){
                 setUserList(res.data.users);
@@ -33,8 +34,7 @@ export default function AddUser(props) {
     }
 
     function addUser(){
-        Axios.post(`http://localhost:8000/api/groupmanager/projects/${params.projectId}/owner/${localStorage.getItem('id')}/adduser/${user.user_id}`)
-        //groupmanager/projects/:project_id/owner/:usera_id/adduser/:userb_id
+        Axios.post(buildURL(`/api/groupmanager/projects/${params.projectId}/owner/${localStorage.getItem('id')}/adduser/${user.user_id}`))
         .then(res=>{
             if(res.data.success){
                 props.history.push(`/projectmanager/${params.projectId}`);

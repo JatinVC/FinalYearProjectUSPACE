@@ -4,11 +4,13 @@ import Reviews from '../components/ReviewCard'
 import Subject from '../components/Subject'
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
+import {buildURL} from '../_helpers/url-builder';
+
 function TeacherReview(){
     const [subjects, setSubjects] = useState([]);
 
     function getSubjects(){
-        axios.get('http://localhost:8000/api/discussion/categories')
+        axios.get(buildURL('/api/discussion/categories'))
         .then(res=>{
             if(res.data.success){
                 setSubjects(res.data.category);

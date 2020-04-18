@@ -7,7 +7,8 @@ import Axios from 'axios';
 import Task from './Task';
 import _ from 'lodash';
 import { Card, CardActionArea } from '@material-ui/core';
-import {Button} from '@material-ui/core'
+import {Button} from '@material-ui/core';
+import {buildURL} from '../_helpers/url-builder';
 
 const options = [
     'Detail of the room',
@@ -55,7 +56,7 @@ const IndividualRoom = (props) =>{
     const [tasks, setTasks] = useState([]);
     const {match: {params}} = props;
     function getTasks(){
-      Axios.get(`http://localhost:8000/api/groupmanager/projects/${params.projectId}/gettasks`)
+      Axios.get(buildURL(`/api/groupmanager/projects/${params.projectId}/gettasks`))
       .then(res=>{
         if(res.data.success){
           setTasks(res.data.tasks);
@@ -64,7 +65,7 @@ const IndividualRoom = (props) =>{
     }
 
     function deleteTask(task){
-      Axios.post(`http://localhost:8000/api/groupmanager/projects/${params.projectId}/deletetask/${task}`)
+      Axios.post(buildURL(`/api/groupmanager/projects/${params.projectId}/deletetask/${task}`))
       .then(res=>{
           if(res.data.success){
             const data = _.filter(tasks, (element)=>element.task_id!=task);

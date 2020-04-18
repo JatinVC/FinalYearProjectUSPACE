@@ -20,6 +20,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 import Comment from './Comment';
+import { buildURL } from '../_helpers/url-builder';
+import {Avatar} from '@material-ui/core';
 
 const options = [
     'Add friend',
@@ -83,7 +85,7 @@ const Post=(props)=>{
     });
 
     function getPostData(){
-      Axios.get(`http://localhost:8000/api/discussion/showpost/${params.postId}`)
+      Axios.get(buildURL(`/api/discussion/showpost/${params.postId}`))
       .then(response=>{
         if(response.data.success){
           setPostData({
@@ -134,7 +136,7 @@ const Post=(props)=>{
         post_id: params.postId,
         comment: postComment.commentContent
       }
-      Axios.post(`http://localhost:8000/api/discussion/${params.postId}/createcomment/${postComment.commentUser}`, requestPayload)
+      Axios.post(buildURL(`/api/discussion/${params.postId}/createcomment/${postComment.commentUser}`), requestPayload)
       .then(res=>{
         if(res.data.success){
           console.log(res.data.message);
@@ -154,9 +156,9 @@ const Post=(props)=>{
             <Grid item xs={8}> 
             <Card className={classes.root}>
       <CardHeader
-        // avatar={
-        //     <Avatar alt="Cindy Baker" src={Head1} />
-        // }
+        avatar={
+          <Avatar alt={postData.postUser} src={`https://ui-avatars.com/api/?name=${postData.postUser}`}></Avatar>
+        }
         action={
             <div>
           <IconButton

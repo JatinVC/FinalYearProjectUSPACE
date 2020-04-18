@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
+import {buildURL} from '../_helpers/url-builder';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,7 +47,7 @@ export default function Register(props) {
   
   function register(event){
     console.log(userData);
-    axios.post('http://localhost:8000/api/signup', {
+    axios.post(buildURL('/api/signup'), {
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,

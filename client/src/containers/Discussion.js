@@ -13,7 +13,8 @@ import { red } from '@material-ui/core/colors';
 import axios from 'axios';
 import AddIcon from '@material-ui/icons/Add';
 import {Link as ReLink} from 'react-router-dom';
- 
+import {buildURL} from '../_helpers/url-builder';
+
 const useStyles = makeStyles(theme => ({
     rooted: {
         '& > * + *': {
@@ -57,7 +58,7 @@ function Discussion (){
 
     //get all posts, store in state, pass them as a prop
     function getPosts(){
-      axios.get('http://localhost:8000/api/discussion/showposts')
+      axios.get(buildURL('/api/discussion/showposts'))
       .then(res=>{
         if(res.data.success){
           setPosts(res.data.posts);

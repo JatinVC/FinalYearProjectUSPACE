@@ -52,7 +52,7 @@ router.post('/login', (req, res, next)=>{
                         expiresIn: 60*60*24 //expires in a day
                     });
 
-                    res.cookie('token', token, {maxAge: 60*60*24*1000});
+                    res.cookie('token', token, {maxAge: 60*60*24*1000, httpOnly:true});
                     res.json({
                         success: true,
                         message: 'User Authenticated',

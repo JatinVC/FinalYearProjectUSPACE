@@ -22,7 +22,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # No batch files plz
-./client/buildAndDeploy.bat
+/client/buildAndDeploy.bat
 
 #build files
-./client/build
+/client/build
+

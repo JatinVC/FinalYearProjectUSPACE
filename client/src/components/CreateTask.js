@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import InputLabel from '@material-ui/core/InputLabel'
 import {Button} from '@material-ui/core';
 import Axios from 'axios'
+import { buildURL } from '../_helpers/url-builder'
 const Task=(props)=>{
   const {match: {params}} = props;
   const [task, setTask] = useState({
@@ -19,7 +20,7 @@ const Task=(props)=>{
     let requestPayload = {
       taskContent: task.taskContent
     };
-    Axios.post(`http://localhost:8000/api/groupmanager/projects/${task.taskProject}/createtask/${task.taskUser}`, requestPayload)
+    Axios.post(buildURL(`/api/groupmanager/projects/${task.taskProject}/createtask/${task.taskUser}`), requestPayload)
     //groupmanager/projects/:project_id/createtask/:user_id
     .then(res=>{
       if(res.data.success){

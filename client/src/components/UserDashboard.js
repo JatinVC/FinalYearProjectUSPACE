@@ -12,6 +12,7 @@ import {FormControl} from '@material-ui/core';
 import {InputLabel} from '@material-ui/core';
 import {Select} from '@material-ui/core'; 
 import {Link as ReLink} from 'react-router-dom'
+import {buildURL} from '../_helpers/url-builder';
 
 export default function UserDashboard() {
 
@@ -21,7 +22,7 @@ export default function UserDashboard() {
     }]);
 
     function getCategories(){
-        Axios.get('http://localhost:8000/api/discussion/categories')
+        Axios.get(buildURL('/api/discussion/categories'))
         .then(res=>{
             if(res.data.success){
                 setCategoriesList(res.data.category);

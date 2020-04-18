@@ -5,7 +5,9 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import InputLabel from '@material-ui/core/InputLabel'
 import {Button} from '@material-ui/core';
-import Axios from 'axios'
+import Axios from 'axios';
+import {buildURL} from '../_helpers/url-builder';
+
 const CreateProject=(props)=>{
     const [project, setProject] = useState({
         projectTitle: '',
@@ -16,7 +18,7 @@ const CreateProject=(props)=>{
         let requestPayload = {
             title: project.projectTitle
         };
-        Axios.post(`http://localhost:8000/api/groupmanager/createproject/${project.projectUser}`, requestPayload)
+        Axios.post(buildURL(`/api/groupmanager/createproject/${project.projectUser}`), requestPayload)
         .then(res=>{
             if(res.data.success){
                 props.history.push('/projectmanager');
