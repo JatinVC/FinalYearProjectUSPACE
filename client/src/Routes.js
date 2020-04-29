@@ -16,6 +16,7 @@ import CreateTask from './components/CreateTask';
 import AddUser from './components/AddUser';
 import Dashboard from './containers/Dashboard';
 import CatDiscussion from './containers/CatDiscussion';
+import CreateAnnouncement from './containers/CreateAnnouncement';
 
 export default function Routes(){
     return(
@@ -36,6 +37,7 @@ export default function Routes(){
                 <PrivateRoute path='/projectmanager/:projectId' exact component={IndividualRoom} />
                 <PrivateRoute path='/projectmanager/:projectId/createtask' exact component={CreateTask} />
                 <PrivateRoute path='/projectmanager/:projectId/adduser' exact component={AddUser} />
+                <PrivateRoute path='/announcement/create' exact component={CreateAnnouncement} />
             </Switch>
     );
 }

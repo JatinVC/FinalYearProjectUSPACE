@@ -5,6 +5,7 @@ import {TextField} from '@material-ui/core';
 import {Grid} from '@material-ui/core';
 import Axios from 'axios';
 import { buildURL } from '../_helpers/url-builder';
+import {Link} from 'react-router-dom';
 export default function ModeratorDashboard() {
     const [category, setCategory] = useState({
         catName: '',
@@ -69,6 +70,18 @@ export default function ModeratorDashboard() {
                         Create Category
                     </Button>
                 </Grid>
+            </Grid>
+            <Grid>
+                <Button
+                    component={Link}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    to='/announcement/create'
+                >
+                    Create Announcement
+                </Button>
             </Grid>
             <UserDashboard></UserDashboard>
         </div>

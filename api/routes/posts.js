@@ -251,4 +251,44 @@ router.post('/discussion/createcat', (req, res, next)=>{
         }
     });
 });
+
+//create announcement
+router.post('/announcement/create', (req, res, next)=>{
+    var sql = `INSERT INTO announcements(a_title, a_content, a_user) VALUES ('${req.body.aTitle}','${req.body.aContent}','${req.body.userId}')`;
+    db.query(sql, (err, result)=>{
+        if(err){
+            res.status(400).json({
+                success: false,
+                message: 'announcement could not be created'
+            });
+        }else{
+            res.json({
+                success: true,
+                message: 'announcement created'
+            });
+        }
+    });
+});
+
+//get all announcement
+router.get('/announcement', (req, res, next)=>{
+    var sql = `SELECT * FROM announcements`
+    db.query(sql, (err, results)=>{
+        if(err){
+            res.status(400).json({
+                success: false,
+                message: 'announcements could not be retrieved'
+            });
+        }else{
+            _.each(results, (element)=>{
+                element.a_date = moment(element.a_date).format("MMMM D YYYY, h:mm a");
+            })
+
+            res.json({
+                success: true,
+                announcements: results
+            });
+        }
+    });
+});
 module.exports.router = router;

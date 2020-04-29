@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -7,6 +7,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import About from '../Img/About.jpg';
+import Axios from 'axios';
+import {buildURL} from '../_helpers/url-builder';
+import AnnouncementCard from '../components/AnnouncementCard';
+
 const useStyles = makeStyles({
     root: {
     maxWidth:1000
@@ -18,12 +22,34 @@ const useStyles = makeStyles({
   });
 const Home = () =>{
     const classes = useStyles();
+    const [announcements, setAnnouncements] = useState([])
+
+    function getAnnouncements(){
+        Axios.get(buildURL('/api/announcement'))
+        .then(res=>{
+            if(res.data.success){
+                setAnnouncements(res.data.announcements);
+            }else{
+                console.log('error getting announcements');
+            }
+        });
+    }
+
+    useEffect(()=>{
+        getAnnouncements();
+      }, []);
+
+    var announcementCards = announcements.map((announcement)=>{
+    return(<AnnouncementCard announcement={announcement} key={announcement.a_id}></AnnouncementCard>);
+    });  
+
     return(
         <Grid container direction="row" >
             <Grid item xs={2}>
             
             </Grid>
             <Grid item xs={8}>
+                {announcementCards}
                 <Grid item xs={12}>
                     <Card className={classes.root}>
                         <CardActionArea>
