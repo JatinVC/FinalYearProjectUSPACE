@@ -43,7 +43,7 @@ export default function Register(props) {
     studentId: '',
     password: ''
   });
-  const [registerMessage, setRegisterData] = useState('');
+  const [registerMessage, setRegisterMessage] = useState('');
   
   function register(event){
     console.log(userData);
@@ -59,7 +59,7 @@ export default function Register(props) {
       if(res.data.success){
         props.history.push("/login");
       }else{
-        setRegisterData('Registration failed, please try again');
+        setRegisterMessage('Registration failed, please try again');
       }
     })
     event.preventDefault();
@@ -67,6 +67,25 @@ export default function Register(props) {
 
   function handleFieldChange(event){
     setUserData({...userData, [event.target.name]:event.target.value});
+  }
+
+
+  var emailRegex = /^[A-Za-z0-9!#$^&*|\-_+=~`?"]*([A-Za-z0-9!#$^&*|\-_+=~`?"]\.[A-Za-z0-9!#$^&*|\-_+=~`?"]+)*\.{0,1}[A-Za-z0-9!#$^&*|\-_+=~`?"]@learner\.hkuspace\.hku\.hk$/;
+
+  function isEmailValid(email){
+    var valid = emailRegex.test(email);
+    if(!valid)
+        return false;
+    return true;
+  }
+
+  function handleRegister(event){
+    if(isEmailValid(userData.email)){
+      register();
+    }else{
+      setRegisterMessage('Email not valid, please enter a "learner.hkuspace.hku.hk" email');
+    }
+    event.preventDefault();
   }
 
   return (
@@ -79,7 +98,7 @@ export default function Register(props) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={register}>
+        <form className={classes.form} noValidate onSubmit={handleRegister}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -177,7 +196,7 @@ export default function Register(props) {
                 Already have an account? Sign in
               </Link>
             </Grid>
-            {registerMessage}
+            <Typography>{registerMessage}</Typography>
           </Grid>
         </form>
       </div>
