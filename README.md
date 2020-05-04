@@ -14,3 +14,5 @@ Make sure that a database running on localhost has the hkuforum database install
 Best to do this via Laragon "https://laragon.org/" or XAMPP "https://www.apachefriends.org/index.html"
 <br>
 the client runs on port 5000, and the api runs on port 8000, this shouldn't affect any services running locally.
+<br>
+For buildURL to work, you need to add the apache2 config file `01-react.conf` into your apache2/sites-enabled folder
