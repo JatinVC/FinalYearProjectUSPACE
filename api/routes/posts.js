@@ -32,7 +32,7 @@ router.post('/createpost/:user_id', function(req, res, next){
 
 //show posts on seperate page
 router.get('/discussion/showposts', function(req, res, next){
-    var sql = `SELECT post_id, post_content, post_date, post_cat, post_topic, post_user, post_likes, username FROM post LEFT JOIN users ON post.post_user=users.user_id ORDER BY post_date DESC`;
+    var sql = `SELECT post_id, post_title, post_content, post_date, post_cat, post_topic, post_user, post_likes, username FROM post LEFT JOIN users ON post.post_user=users.user_id ORDER BY post_date DESC`;
     db.query(sql, function(err, results){
         if(results){
             _.each(results, (element)=>{
