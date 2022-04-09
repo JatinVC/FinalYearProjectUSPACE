@@ -23,7 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.11",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mysql": "^2.18.1",
     "req-flash": "0.0.3"
   }
